@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一、简介cucumber是BDD(Behavior-driven development，行为驱动开发)的一个自动化测试的副产品。它使用自然语言来描述测试，使得非程序员可以理解他们。Gherkin是这种自然语言测试的简单语法，而Cucumber是可以执行它们的工具。关于BDD有兴趣自行了解。附cucumber官网链接，里面也有关于BDD的信息。cucumber本质上是使用根据正则表达式匹配自然语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动化测试之cucumber.md">
+<meta property="og:url" content="http://yoursite.com/2019/05/08/自动化测试之cucumber/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="一、简介cucumber是BDD(Behavior-driven development，行为驱动开发)的一个自动化测试的副产品。它使用自然语言来描述测试，使得非程序员可以理解他们。Gherkin是这种自然语言测试的简单语法，而Cucumber是可以执行它们的工具。关于BDD有兴趣自行了解。附cucumber官网链接，里面也有关于BDD的信息。cucumber本质上是使用根据正则表达式匹配自然语言">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/05/08/自动化测试之cucumber/cucumber1.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/08/自动化测试之cucumber/cucumber2.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/08/自动化测试之cucumber/cucumber3.png">
+<meta property="og:updated_time" content="2019-05-08T08:26:09.117Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自动化测试之cucumber.md">
+<meta name="twitter:description" content="一、简介cucumber是BDD(Behavior-driven development，行为驱动开发)的一个自动化测试的副产品。它使用自然语言来描述测试，使得非程序员可以理解他们。Gherkin是这种自然语言测试的简单语法，而Cucumber是可以执行它们的工具。关于BDD有兴趣自行了解。附cucumber官网链接，里面也有关于BDD的信息。cucumber本质上是使用根据正则表达式匹配自然语言">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/08/自动化测试之cucumber/cucumber1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/05/08/自动化测试之cucumber/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>自动化测试之cucumber.md | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/08/自动化测试之cucumber/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自动化测试之cucumber.md
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-08 14:27:19 / 修改时间：16:26:09" itemprop="dateCreated datePublished" datetime="2019-05-08T14:27:19+08:00">2019-05-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h1><p>cucumber是BDD(Behavior-driven development，行为驱动开发)的一个自动化测试的副产品。它使用自然语言来描述测试，使得非程序员可以理解他们。Gherkin是这种自然语言测试的简单语法，而Cucumber是可以执行它们的工具。关于BDD有兴趣自行了解。附cucumber<a href="https://cucumber.io/" title="cucumber官网" target="_blank" rel="noopener">官网链接</a>，里面也有关于BDD的信息。<br>cucumber本质上是使用根据正则表达式匹配自然语言，然后依次执行对应的方法，以达到测试的目的。</p>
+<h1 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h1><pre><code>cucumber支持JDK8，创建一个mvn工程，在pom.xml文件引入以下依赖即可。
+另外如果测试框架采用的是junit，则需要多一个cucumber-junit。
+如果集成spring,则还需要引入cucumber-spring
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;info.cukes&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;cucumber-java&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;1.2.4&lt;/version&gt;</span><br><span class="line">     &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line"> &lt;/dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;info.cukes&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;cucumber-junit&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;1.2.4&lt;/version&gt;</span><br><span class="line">     &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line"> &lt;/dependency&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;info.cukes&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;cucumber-spring&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;1.2.4&lt;/version&gt;</span><br><span class="line">     &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line"> &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<pre><code>也可以根据mvn骨架创建cucumber项目。打开终端，转到要创建项目的目录（比如本文是hellocucumber)，运行以下命令
+</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> mvn archetype:generate                  </span><br><span class="line">-DarchetypeGroupId=io.cucumber           </span><br><span class="line">-DarchetypeArtifactId=cucumber-archetype </span><br><span class="line">-DarchetypeVersion=2.3.1.2               </span><br><span class="line">-DgroupId=hellocucumber                  </span><br><span class="line">-DartifactId=hellocucumber              </span><br><span class="line">-Dpackage=hellocucumber                  </span><br><span class="line">-Dversion=1.0.0-SNAPSHOT                 </span><br><span class="line">-DinteractiveMode=false</span><br></pre></td></tr></table></figure>
+<pre><code>应该得到如下结果:
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[INFO] Project created from Archetype in dir:   hellocucumber/cucumber</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] BUILD SUCCESS</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<pre><code>但是不支持jdk8 U51之后的新版本！每次都报错说&quot;Wrong type at constant pool index&quot;。
+</code></pre><h1 id="三、基本语法"><a href="#三、基本语法" class="headerlink" title="三、基本语法"></a>三、基本语法</h1><h2 id="3-1-Gherkin"><a href="#3-1-Gherkin" class="headerlink" title="3.1 Gherkin"></a>3.1 Gherkin</h2><pre><code>Cucumber 执行 .feature 文件，而这些文件包含可执行的规范，用被称为 Gherkin 的语言写成。.featur文件一般放在src/test/resources/[项目名称xxx]目录下或者其子目录下。
+
+Gherkin 是带有一点额外结构的纯文本的英文(或者替他60多种语言). Gherkin 设计为容易被非编程人员学习，但有足够的组织结构来容许简洁的范例描述，以说明大多数实际领域中的业务规则。
+下面是一个简单的.feature 文件的例子
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Feature: Refund item</span><br><span class="line"></span><br><span class="line">Scenario: Jeff returns a faulty microwave</span><br><span class="line">    Given Jeff has bought a microwave for $100</span><br><span class="line">    And he has a receipt</span><br><span class="line">    When he returns the microwave</span><br><span class="line">    Then Jeff should be refunded $100</span><br></pre></td></tr></table></figure>
+<pre><code>在 Gherkin 中, 每行必须以 Gherkin 关键字开头, 然后跟随有任意的文本。主要的关键字有：
+</code></pre><ul>
+<li>Feature / 特性</li>
+<li>Scenario / 场景</li>
+<li>Given, When, Then, And, But (Steps/步骤)</li>
+<li>Background / 背景</li>
+<li>Scenario Outline / 场景大纲</li>
+<li><p>Examples / 示例</p>
+<p>  还有其他一些额外的关键字:</p>
+</li>
+<li><p>“”” (Doc Strings)</p>
+</li>
+<li>| (Data Tables)</li>
+<li>@ (Tags)</li>
+<li># Comments</li>
+</ul>
+<hr>
+<h2 id="3-2-Feature-特性"><a href="#3-2-Feature-特性" class="headerlink" title="3.2 Feature / 特性"></a>3.2 Feature / 特性</h2><pre><code>.feature 文件用来描述系统的一个单一特性，或者某个特性的一个独特方面。这仅仅是一个提供软件特性的高级描述的方法，并用于组织相关的场景(scenarios)。
+feature有三个基本元素：
+1.Feature: 关键字
+2.name： 名称, 在同一行
+3.description：描述, 可选（但是强烈推荐），可以占据多行   
+例如：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Feature: Refund item</span><br><span class="line"></span><br><span class="line">  Sales assistants should be able to refund customers&apos; purchases.</span><br><span class="line">  This is required by the law, and is also essential in order to</span><br><span class="line">  keep customers happy.</span><br><span class="line"></span><br><span class="line">  Rules:</span><br><span class="line">  - Customer must present proof of purchase</span><br><span class="line">  - Purchase must be less than 30 days ago</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="3-3-Scenario-场景"><a href="#3-3-Scenario-场景" class="headerlink" title="3.3 Scenario / 场景"></a>3.3 Scenario / 场景</h2><pre><code>Scenario 是具体的实例，描述一个业务规则。它由步骤列表组成。
+可以有任意多个步骤，但是推荐数量保持在每个场景3-5个步骤。如果太长，他们将丧失作为规范和文档的表单能力。
+在作为规范和文档之外，场景也同样是测试。作为一个整体，场景是系统的可执行规范。
+场景遵循同样的模式：
+1、 描述一个初始化上下文
+2、 描述一个时间
+3、 描述一个期望的产出
+</code></pre><hr>
+<h2 id="3-4-Steps-步骤"><a href="#3-4-Steps-步骤" class="headerlink" title="3.4 Steps / 步骤"></a>3.4 Steps / 步骤</h2><pre><code>步骤通常以 Given, When 或 Then 开头。如果有多个 Given 或者 When 步骤连在一
+起，可以使用 And 或者 But。Cucumber不区分这些关键字，但是选择正确的关键字对于
+场景整体的可读性很重要。
+</code></pre><hr>
+<h2 id="3-5-Given-假设"><a href="#3-5-Given-假设" class="headerlink" title="3.5 Given / 假设"></a>3.5 Given / 假设</h2><pre><code>Given 步骤用于描述系统的初始化上下文 - 场景的一幕(scene of Scenario)。它通常是某些已经发生在过去的东西。
+当cucumber执行 Given 步骤时，它将配置系统到一个定义良好的状态，例如创建并配置对象或者添加数据到测试数据库。
+可以有多个 Given 步骤（可以使用 And 或者 But 来变的更可读）
+</code></pre><hr>
+<h2 id="3-6-Then-那么"><a href="#3-6-Then-那么" class="headerlink" title="3.6 Then / 那么"></a>3.6 Then / 那么</h2><pre><code>Then 步骤用于描述期望的产出，或者结果。
+Then 步骤的 步骤定义 应该使用断言来比较实际产出(系统实际行为)和期待产出(步骤所述的系统应有的行为)
+</code></pre><hr>
+<h2 id="3-7-Background-背景"><a href="#3-7-Background-背景" class="headerlink" title="3.7 Background / 背景"></a>3.7 Background / 背景</h2><pre><code>发现一个feature文件中的所有场景都在重复同样的 Given 步骤。既然它在每个场景
+可以将这样的 Given 步骤移动到background中，在第一个场景之前，用一个 Background 块组织他们：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Background:</span><br><span class="line">  Given a $100 microwave was sold on 2015-11-03</span><br><span class="line">  And today is 2015-11-18</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="3-8-Scenario-Outline-场景大纲"><a href="#3-8-Scenario-Outline-场景大纲" class="headerlink" title="3.8 Scenario Outline / 场景大纲"></a>3.8 Scenario Outline / 场景大纲</h2><pre><code>当有复杂业务规则，带有多个输入或者输出，可以最终创建仅仅是值有差别的多个场景。举个例子:
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Scenario: feeding a small suckler cow</span><br><span class="line">    Given the cow weighs 450 kg</span><br><span class="line">    When we calculate the feeding requirements</span><br><span class="line">    Then the energy should be 26500 MJ</span><br><span class="line">    And the protein should be 215 kg</span><br><span class="line"></span><br><span class="line">Scenario: feeding a medium suckler cow</span><br><span class="line">    Given the cow weighs 500 kg</span><br><span class="line">    When we calculate the feeding requirements</span><br><span class="line">    Then the energy should be 29500 MJ</span><br><span class="line">    And the protein should be 245 kg</span><br><span class="line"></span><br><span class="line"># 还有两个例子 --- 已经令人厌烦了</span><br></pre></td></tr></table></figure>
+<pre><code>如果有很多例子，将会很乏味。可以通过使用场景大纲来简化：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Scenario Outline: feeding a suckler cow</span><br><span class="line">    Given the cow weighs &lt;weight&gt; kg</span><br><span class="line">    When we calculate the feeding requirements</span><br><span class="line">    Then the energy should be &lt;energy&gt; MJ</span><br><span class="line">    And the protein should be &lt;protein&gt; kg</span><br><span class="line"></span><br><span class="line">    Examples:</span><br><span class="line">        | weight | energy | protein |</span><br><span class="line">        |    450 |  26500 |     215 |</span><br><span class="line">        |    500 |  29500 |     245 |</span><br><span class="line">        |    575 |  31500 |     255 |</span><br><span class="line">        |    600 |  37000 |     305 |</span><br></pre></td></tr></table></figure>
+<pre><code>这更易于阅读。场景大纲步骤中的变量通过使用 &lt; 和 &gt; 来标记。
+</code></pre><hr>
+<h2 id="3-9-Examples-示例"><a href="#3-9-Examples-示例" class="headerlink" title="3.9 Examples / 示例"></a>3.9 Examples / 示例</h2><pre><code>场景大纲部分总被带有一个或者多个 Examples / 示例 部分，用于包含一个表格。
+表格必须有header 行，对应场景大纲步骤中的变量。
+下面的每一行将创建一个新的场景，使用变量的值填充。
+</code></pre><hr>
+<h2 id="3-10-执行步骤"><a href="#3-10-执行步骤" class="headerlink" title="3.10 执行步骤"></a>3.10 执行步骤</h2><pre><code>当cucumber执行场景中的步骤时，它将查找匹配的步骤定义来执行。
+步骤定义是带有正则表达式的小段代码。正则表达式用于连接步骤定义到所有匹配的步骤，而代码是cucumber要执行的内容。
+例如一下场景：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Scenario: Some cukes</span><br><span class="line">    Given I have 48 cukes in my belly</span><br></pre></td></tr></table></figure>
+<pre><code>步骤的 I have 48 cukes in my belly 部分（Given关键字后面的文本）将匹配下面的步骤定义：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Given(&quot;I have (\\d+) cukes in my belly&quot;)</span><br><span class="line">public void I_have_cukes_in_my_belly(int cukes)&#123;</span><br><span class="line">    System.out.format(&quot;Cukes: %n\n&quot;, cukes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>当cucumber匹配步骤到一个步骤定义中的正则表达式时，它传递所有捕获组（capture group）的值到步骤定义的参数。捕获组是字符串(即使他们匹配数字如 \d+ )。对于静态类型语言，cucumber将自动转换这些字符串到合适的类型。对于动态类型语言，默认不转换，因为他们没有类型信息。
+Cucumber不区分这五个步骤关键字 Given， When， Then， And 和 But。
+</code></pre><h1 id="四、实践"><a href="#四、实践" class="headerlink" title="四、实践"></a>四、实践</h1><h2 id="4-1编写-feature文件"><a href="#4-1编写-feature文件" class="headerlink" title="4.1编写.feature文件"></a>4.1编写.feature文件</h2><p><img src="/2019/05/08/自动化测试之cucumber/cucumber1.png" alt="cucumber1"><br>    .features文件一般放在test/resoure/features目录下。<br>    图中使用的是中文来编写的，这样写的前提是在首行加上 # language: zh-CN<br>    一个场景为一个执行单位，一般用于测试一个接口。每个步骤都会通过正则匹配一个方法。</p>
+<h2 id="4-2编写步骤steps类"><a href="#4-2编写步骤steps类" class="headerlink" title="4.2编写步骤steps类"></a>4.2编写步骤steps类</h2><pre><code>如下图：
+</code></pre><p><img src="/2019/05/08/自动化测试之cucumber/cucumber2.png" alt="cucumber2"><br>    steps类一般放在test/java/项目包名/目录下的一个文件夹中。<br>    步骤可以通过代码提示自动生成。每个方法中编写测试代码，去测试某个接口。接口的访问使用RestTemplate。使用Assert判断接口返回是否与预期的一样。</p>
+<pre><code>一个完整的场景，包括以下几个步骤：
+1、新建测试数据
+2、调用接口进行测试
+3、删除测试数据
+这样可以重复测试，不会产生多余的测试数据。
+</code></pre><h2 id="4-3-启动测试"><a href="#4-3-启动测试" class="headerlink" title="4.3 启动测试"></a>4.3 启动测试</h2><pre><code>启动测试有两种方法，
+1、右键.feature文件，选择Debug Feature执行
+2、如下图，编写测试类去启动@CucumberOptions注解的features属性对应.feature文件
+</code></pre><p><img src="/2019/05/08/自动化测试之cucumber/cucumber3.png" alt="cucumber3"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/01/hexo的安装与使用/" rel="next" title="Hexo安装与使用">
+                <i class="fa fa-chevron-left"></i> Hexo安装与使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">林明星</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、简介"><span class="nav-number">1.</span> <span class="nav-text">一、简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、安装"><span class="nav-number">2.</span> <span class="nav-text">二、安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、基本语法"><span class="nav-number">3.</span> <span class="nav-text">三、基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-Gherkin"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 Gherkin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-Feature-特性"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 Feature / 特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-Scenario-场景"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 Scenario / 场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-Steps-步骤"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 Steps / 步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-Given-假设"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 Given / 假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-Then-那么"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 Then / 那么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-Background-背景"><span class="nav-number">3.7.</span> <span class="nav-text">3.7 Background / 背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-Scenario-Outline-场景大纲"><span class="nav-number">3.8.</span> <span class="nav-text">3.8 Scenario Outline / 场景大纲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-9-Examples-示例"><span class="nav-number">3.9.</span> <span class="nav-text">3.9 Examples / 示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-10-执行步骤"><span class="nav-number">3.10.</span> <span class="nav-text">3.10 执行步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、实践"><span class="nav-number">4.</span> <span class="nav-text">四、实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1编写-feature文件"><span class="nav-number">4.1.</span> <span class="nav-text">4.1编写.feature文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2编写步骤steps类"><span class="nav-number">4.2.</span> <span class="nav-text">4.2编写步骤steps类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-启动测试"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 启动测试</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林明星</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
