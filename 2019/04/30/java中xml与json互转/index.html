@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1、json与xml互转1.1 json与xml字符串互转demo1234567891011121314151617181920212223242526272829303132333435363738394041import com.gargoylesoftware.htmlunit.javascript.host.xml.XMLSerializer;import org.json.JSONExc">
+<meta name="keywords" content="java xml json">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java中xml与json互转">
+<meta property="og:url" content="http://yoursite.com/2019/04/30/java中xml与json互转/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="1、json与xml互转1.1 json与xml字符串互转demo1234567891011121314151617181920212223242526272829303132333435363738394041import com.gargoylesoftware.htmlunit.javascript.host.xml.XMLSerializer;import org.json.JSONExc">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-05-13T09:04:18.458Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java中xml与json互转">
+<meta name="twitter:description" content="1、json与xml互转1.1 json与xml字符串互转demo1234567891011121314151617181920212223242526272829303132333435363738394041import com.gargoylesoftware.htmlunit.javascript.host.xml.XMLSerializer;import org.json.JSONExc">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/04/30/java中xml与json互转/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>java中xml与json互转 | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/30/java中xml与json互转/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java中xml与json互转
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-30 16:08:37" itemprop="dateCreated datePublished" datetime="2019-04-30T16:08:37+08:00">2019-04-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-13 17:04:18" itemprop="dateModified" datetime="2019-05-13T17:04:18+08:00">2019-05-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java-xml/" itemprop="url" rel="index"><span itemprop="name">java-xml</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1、json与xml互转"><a href="#1、json与xml互转" class="headerlink" title="1、json与xml互转"></a>1、json与xml互转</h1><h2 id="1-1-json与xml字符串互转demo"><a href="#1-1-json与xml字符串互转demo" class="headerlink" title="1.1 json与xml字符串互转demo"></a>1.1 json与xml字符串互转demo</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">import com.gargoylesoftware.htmlunit.javascript.host.xml.XMLSerializer;</span><br><span class="line">import org.json.JSONException;</span><br><span class="line">import org.json.JSONObject;</span><br><span class="line">import org.json.XML;</span><br><span class="line">import org.junit.jupiter.api.Test;</span><br><span class="line"></span><br><span class="line">import javax.xml.crypto.dsig.XMLSignature;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @Description TODO</span><br><span class="line"> * @Author linmingxing</span><br><span class="line"> * @Date 2019/5/9 上午10:06</span><br><span class="line"> **/</span><br><span class="line">public class DeliverOneATest &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        String xml = &quot;&lt;Response&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;logisticProviderID&gt;YTO&lt;/logisticProviderID&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;txLogisticID&gt;2019050910&lt;/txLogisticID&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;clientID&gt;K21000119&lt;/clientID&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;mailNo&gt;G10127901493&lt;/mailNo&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;distributeInfo&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;shortAddress&gt;900-074-00-010&lt;/shortAddress&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;consigneeBranchCode&gt;290082&lt;/consigneeBranchCode&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;packageCenterCode&gt;290911&lt;/packageCenterCode&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;packageCenterName&gt;&lt;/packageCenterName&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;/distributeInfo&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;code&gt;200&lt;/code&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;success&gt;true&lt;/success&gt;\n&quot; +</span><br><span class="line">                &quot;&lt;/Response&gt;&quot;;</span><br><span class="line">        try &#123;</span><br><span class="line">            //xml字符串转json</span><br><span class="line">            JSONObject jsonObject = XML.toJSONObject(xml);</span><br><span class="line">            //JSONObject转换为xml字符串</span><br><span class="line">            String s = XML.toString(jsonObject);</span><br><span class="line">            System.out.println(jsonObject.toString());</span><br><span class="line">            System.out.println(s);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-将xml文件解析成json"><a href="#1-2-将xml文件解析成json" class="headerlink" title="1.2 将xml文件解析成json"></a>1.2 将xml文件解析成json</h2><pre><code>添加maven依赖：
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.json&lt;/groupId&gt;
+        &lt;artifactId&gt;json&lt;/artifactId&gt;
+        &lt;version&gt;20180813&lt;/version&gt;
+    &lt;/dependency&gt;
+
+xml文件
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.1&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;studentList&gt;</span><br><span class="line">    &lt;student id=&quot;A01&quot; class=&quot;A&quot;&gt;</span><br><span class="line">        &lt;name&gt;小明&lt;/name&gt;</span><br><span class="line">        &lt;age&gt;19&lt;/age&gt;</span><br><span class="line">        &lt;gender&gt;man&lt;/gender&gt;</span><br><span class="line">        &lt;score&gt;</span><br><span class="line">            &lt;subject name=&quot;Advanced Mathematics&quot;&gt;90&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;College English&quot;&gt;85&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;C++Programming&quot;&gt;88&lt;/subject&gt;</span><br><span class="line">        &lt;/score&gt;</span><br><span class="line">    &lt;/student&gt;</span><br><span class="line"></span><br><span class="line">    &lt;student id=&quot;A02&quot; class=&quot;B&quot;&gt;</span><br><span class="line">        &lt;name&gt;小红&lt;/name&gt;</span><br><span class="line">        &lt;age&gt;20&lt;/age&gt;</span><br><span class="line">        &lt;gender&gt;woman&lt;/gender&gt;</span><br><span class="line">        &lt;score&gt;</span><br><span class="line">            &lt;subject name=&quot;Data Structure&quot;&gt;80&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;JavaProgramming&quot;&gt;90&lt;/subject&gt;</span><br><span class="line">        &lt;/score&gt;</span><br><span class="line">    &lt;/student&gt;</span><br><span class="line"></span><br><span class="line">    &lt;student1 id=&quot;A02&quot; class=&quot;B&quot;&gt;</span><br><span class="line">        &lt;name&gt;小红&lt;/name&gt;</span><br><span class="line">        &lt;age&gt;20&lt;/age&gt;</span><br><span class="line">        &lt;gender&gt;woman&lt;/gender&gt;</span><br><span class="line">        &lt;score&gt;</span><br><span class="line">            &lt;subject name=&quot;Data Structure&quot;&gt;80&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;JavaProgramming&quot;&gt;90&lt;/subject&gt;</span><br><span class="line">        &lt;/score&gt;</span><br><span class="line">    &lt;/student1&gt;</span><br><span class="line">&lt;/studentList&gt;</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line">	java代码</span><br></pre></td></tr></table></figure>
+<p>package com.linmx.parsexml.OrgJsonJson;</p>
+<p>import org.json.JSONObject;<br>import org.json.XML;</p>
+<p>import java.io.*;</p>
+<p>/**</p>
+<ul>
+<li>@Description TODO</li>
+<li>@Author linmingxing</li>
+<li><p>@Date 2019/5/10 下午3:46<br>**/<br>public class XmlService {</p>
+<p> //path为xml文件的路径<br> public JSONObject parseXml(String path){</p>
+<pre><code>try {
+    Reader reader = new FileReader(path);
+    JSONObject jsonObject = XML.toJSONObject(reader);
+    return jsonObject;
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
+return null;
+</code></pre><p> }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">	解析出来的jsonObject使用.toString方法即可获取json字符串。</span><br><span class="line">	上面的例子解析出的结果如下：</span><br><span class="line">	&#123;&quot;studentList&quot;:</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;student&quot;:[</span><br><span class="line">				&#123;</span><br><span class="line">					&quot;score&quot;:&#123;</span><br><span class="line">						&quot;subject&quot;:[</span><br><span class="line">							&#123;&quot;name&quot;:&quot;Advanced Mathematics&quot;,&quot;content&quot;:90&#125;,</span><br><span class="line">							&#123;&quot;name&quot;:&quot;College English&quot;,&quot;content&quot;:85&#125;,</span><br><span class="line">							&#123;&quot;name&quot;:&quot;C++Programming&quot;,&quot;content&quot;:88&#125;</span><br><span class="line">						]</span><br><span class="line">					&#125;,</span><br><span class="line">					&quot;gender&quot;:&quot;man&quot;,</span><br><span class="line">					&quot;name&quot;:&quot;小明&quot;,</span><br><span class="line">					&quot;id&quot;:&quot;A01&quot;,</span><br><span class="line">					&quot;class&quot;:&quot;A&quot;,</span><br><span class="line">					&quot;age&quot;:19</span><br><span class="line">				&#125;,</span><br><span class="line">				&#123;</span><br><span class="line">					&quot;score&quot;:&#123;</span><br><span class="line">						&quot;subject&quot;:[</span><br><span class="line">							&#123;&quot;name&quot;:&quot;Data Structure&quot;,&quot;content&quot;:80&#125;,</span><br><span class="line">							&#123;&quot;name&quot;:&quot;JavaProgramming&quot;,&quot;content&quot;:90&#125;</span><br><span class="line">						]</span><br><span class="line">					&#125;,</span><br><span class="line">					&quot;gender&quot;:&quot;woman&quot;,</span><br><span class="line">					&quot;name&quot;:&quot;小红&quot;,</span><br><span class="line">					&quot;id&quot;:&quot;A02&quot;,</span><br><span class="line">					&quot;class&quot;:&quot;B&quot;,</span><br><span class="line">					&quot;age&quot;:20</span><br><span class="line">				&#125;</span><br><span class="line">		],</span><br><span class="line">		&quot;student1&quot;:</span><br><span class="line">			&#123;</span><br><span class="line">				&quot;score&quot;:&#123;</span><br><span class="line">					&quot;subject&quot;:[</span><br><span class="line">						&#123;&quot;name&quot;:&quot;Data Structure&quot;,&quot;content&quot;:80&#125;,</span><br><span class="line">						&#123;&quot;name&quot;:&quot;JavaProgramming&quot;,&quot;content&quot;:90&#125;</span><br><span class="line">				 	]</span><br><span class="line">			 	&#125;,</span><br><span class="line">				&quot;gender&quot;:&quot;woman&quot;,</span><br><span class="line">				&quot;name&quot;:&quot;小红&quot;,</span><br><span class="line">				&quot;id&quot;:&quot;A02&quot;,</span><br><span class="line">				&quot;class&quot;:&quot;B&quot;,</span><br><span class="line">				&quot;age&quot;:20</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"># 2、解析xml的四种经典方式</span><br><span class="line">	xml文件如下：</span><br></pre></td></tr></table></figure>
+<p>&lt;?xml version=”1.0” encoding=”UTF-8”?&gt;</p>
+<p><bookstore><br>    <book id="1"><br>        <name>冰与火之歌</name><br>        <author>乔治马丁</author><br>        <year>2014</year><br>        <price>89</price><br>    </book><br>    <book id="2"><br>        <name>安徒生童话</name><br>        <year>2004</year><br>        <price>77</price><br>        <language>English</language><br>    </book><br></bookstore><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 1.1、DOM解析</span><br><span class="line"></span><br><span class="line">	　　DOM的全称是Document Object Model，也即文档对象模型。在应用程序中，基于DOM的XML分析器将一个XML文档转换成一个对象模型的集合（通常称DOM树），应用程序正是通过对这个对象模型的操作，来实现对XML文档数据的操作。通过DOM接口，应用程序可以在任何时候访问XML文档中的任何一部分数据，因此，这种利用DOM接口的机制也被称作随机访问机制。</span><br><span class="line">	</span><br><span class="line">	　　DOM接口提供了一种通过分层对象模型来访问XML文档信息的方式，这些分层对象模型依据XML的文档结构形成了一棵节点树。无论XML文档中所描述的是什么类型的信息，即便是制表数据、项目列表或一个文档，利用DOM所生成的模型都是节点树的形式。也就是说，DOM强制使用树模型来访问XML文档中的信息。由于XML本质上就是一种分层结构，所以这种描述方法是相当有效的。</span><br><span class="line">	</span><br><span class="line">	　　DOM树所提供的随机访问方式给应用程序的开发带来了很大的灵活性，它可以任意地控制整个XML文档中的内容。然而，由于DOM分析器把整个XML文档转化成DOM树放在了内存中，因此，当文档比较大或者结构比较复杂时，对内存的需求就比较高。而且，对于结构复杂的树的遍历也是一项耗时的操作。所以，DOM分析器对机器性能的要求比较高，实现效率不十分理想。不过，由于DOM分析器所采用的树结构的思想与XML文档的结构相吻合，同时鉴于随机访问所带来的方便，因此，DOM分析器还是有很广泛的使用价值的。</span><br><span class="line">	</span><br><span class="line">	　　　　优点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、形成了树结构，有助于更好的理解、掌握，且代码容易编写。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、解析过程中，树结构保存在内存中，方便修改。</span><br><span class="line">	</span><br><span class="line">	　　　　缺点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、由于文件是一次性读取，所以对内存的耗费比较大。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、如果XML文件比较大，容易影响解析性能且可能会造成内存溢出。</span><br><span class="line">	</span><br><span class="line">	　　以下是解析代码：</span><br></pre></td></tr></table></figure></p>
+<p>public class DOMTest {<br>    public static void main(String[] args) {<br>        //创建一个DocumentBuilderFactory的对象<br>        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();<br>        //创建一个DocumentBuilder的对象<br>        try {<br>            //创建DocumentBuilder对象<br>            DocumentBuilder db = dbf.newDocumentBuilder();<br>            //通过DocumentBuilder对象的parser方法加载books.xml文件到当前项目下<br>            Document document = db.parse(“books.xml”);<br>            //获取所有book节点的集合<br>            NodeList bookList = document.getElementsByTagName(“book”);<br>            //通过nodelist的getLength()方法可以获取bookList的长度<br>            System.out.println(“一共有” + bookList.getLength() + “本书”);<br>            //遍历每一个book节点<br>            for (int i = 0; i &lt; bookList.getLength(); i++) {<br>                System.out.println(“=================下面开始遍历第” + (i + 1) + “本书的内容=================”);<br>                //通过 item(i)方法 获取一个book节点，nodelist的索引值从0开始<br>                Node book = bookList.item(i);<br>                //获取book节点的所有属性集合<br>                NamedNodeMap attrs = book.getAttributes();<br>                System.out.println(“第 “ + (i + 1) + “本书共有” + attrs.getLength() + “个属性”);<br>                //遍历book的属性<br>                for (int j = 0; j &lt; attrs.getLength(); j++) {<br>                    //通过item(index)方法获取book节点的某一个属性<br>                    Node attr = attrs.item(j);<br>                    //获取属性名<br>                    System.out.print(“属性名：” + attr.getNodeName());<br>                    //获取属性值<br>                    System.out.println(“–属性值” + attr.getNodeValue());<br>                }<br>                //解析book节点的子节点<br>                NodeList childNodes = book.getChildNodes();<br>                //遍历childNodes获取每个节点的节点名和节点值<br>                System.out.println(“第” + (i+1) + “本书共有” +<br>                childNodes.getLength() + “个子节点”);<br>                for (int k = 0; k &lt; childNodes.getLength(); k++) {<br>                    //区分出text类型的node以及element类型的node<br>                    if (childNodes.item(k).getNodeType() == Node.ELEMENT_NODE) {<br>                        //获取了element类型节点的节点名<br>                        System.out.print(“第” + (k + 1) + “个节点的节点名：” </p>
+<pre><code>                    + childNodes.item(k).getNodeName());
+                    //获取了element类型节点的节点值
+                    System.out.println(&quot;--节点值是：&quot; + childNodes.item(k).getFirstChild().getNodeValue());
+                    //System.out.println(&quot;--节点值是：&quot; + childNodes.item(k).getTextContent());
+                }
+            }
+            System.out.println(&quot;======================结束遍历第&quot; + (i + 1) + &quot;本书的内容=================&quot;);
+        }
+    } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+    } catch (SAXException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }        
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##1.2 SAX解析</span><br><span class="line"></span><br><span class="line">	　　SAX的全称是Simple APIs for XML，也即XML简单应用程序接口。与DOM不同，SAX提供的访问模式是一种顺序模式，这是一种快速读写XML数据的方式。当使用SAX分析器对XML文档进行分析时，会触发一系列事件，并激活相应的事件处理函数，应用程序通过这些事件处理函数实现对XML文档的访问，因而SAX接口也被称作事件驱动接口。</span><br><span class="line">	</span><br><span class="line">	　　　　优点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、采用事件驱动模式，对内存耗费比较小。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、适用于只处理XML文件中的数据时。</span><br><span class="line">	</span><br><span class="line">	　　　　缺点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、编码比较麻烦。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、很难同时访问XML文件中的多处不同数据。</span><br><span class="line">	</span><br><span class="line">	　　以下是解析代码：</span><br></pre></td></tr></table></figure></p>
+<p>public class SAXTest {<br>    /**</p>
+<pre><code> * @param args
+ */
+public static void main(String[] args) {
+    //锟斤拷取一锟斤拷SAXParserFactory锟斤拷实锟斤拷
+    SAXParserFactory factory = SAXParserFactory.newInstance();
+    //通锟斤拷factory锟斤拷取SAXParser实锟斤拷
+    try {
+        SAXParser parser = factory.newSAXParser();
+        //锟斤拷锟斤拷SAXParserHandler锟斤拷锟斤拷
+        SAXParserHandler handler = new SAXParserHandler();
+        parser.parse(&quot;books.xml&quot;, handler);
+        System.out.println(&quot;~！~！~！共有&quot; + handler.getBookList().size()
+                + &quot;本书&quot;);
+        for (Book book : handler.getBookList()) {
+            System.out.println(book.getId());
+            System.out.println(book.getName());
+            System.out.println(book.getAuthor());
+            System.out.println(book.getYear());
+            System.out.println(book.getPrice());
+            System.out.println(book.getLanguage());
+            System.out.println(&quot;----finish----&quot;);
+        }
+    } catch (ParserConfigurationException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } catch (SAXException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+}
+</code></pre><p>}</p>
+<p>public class SAXParserHandler extends DefaultHandler {<br>    String value = null;<br>    Book book = null;<br>    private ArrayList<book> bookList = new ArrayList<book>();<br>    public ArrayList<book> getBookList() {<br>        return bookList;<br>    }</book></book></book></p>
+<pre><code>int bookIndex = 0;
+/**
+ * 用来标识解析开始
+ */
+@Override
+public void startDocument() throws SAXException {
+    // TODO Auto-generated method stub
+    super.startDocument();
+    System.out.println(&quot;SAX解析开始&quot;);
+}
+
+/**
+ * 用来标识解析结束
+ */
+@Override
+public void endDocument() throws SAXException {
+    // TODO Auto-generated method stub
+    super.endDocument();
+    System.out.println(&quot;SAX解析结束&quot;);
+}
+
+/**
+ * 解析xml元素
+ */
+@Override
+public void startElement(String uri, String localName, String qName,
+        Attributes attributes) throws SAXException {
+    //调用DefaultHandler类的startElement方法
+    super.startElement(uri, localName, qName, attributes);
+    if (qName.equals(&quot;book&quot;)) {
+        bookIndex++;
+        //创建一个book对象
+        book = new Book();
+        //开始解析book元素的属性
+        System.out.println(&quot;======================开始遍历某一本书的内容=================&quot;);
+        //不知道book元素下属性的名称以及个数，如何获取属性名以及属性值
+        int num = attributes.getLength();
+        for(int i = 0; i &lt; num; i++){
+            System.out.print(&quot;book元素的第&quot; + (i + 1) +  &quot;个属性名是：&quot;
+                    + attributes.getQName(i));
+            System.out.println(&quot;---属性值是：&quot; + attributes.getValue(i));
+            if (attributes.getQName(i).equals(&quot;id&quot;)) {
+                book.setId(attributes.getValue(i));
+            }
+        }
+    }
+    else if (!qName.equals(&quot;name&quot;) &amp;&amp; !qName.equals(&quot;bookstore&quot;)) {
+        System.out.print(&quot;节点名是：&quot; + qName + &quot;---&quot;);
+    }
+}
+
+@Override
+public void endElement(String uri, String localName, String qName)
+        throws SAXException {
+    //调用DefaultHandler类的endElement方法
+    super.endElement(uri, localName, qName);
+    //判断是否针对一本书已经遍历结束
+    if (qName.equals(&quot;book&quot;)) {
+        bookList.add(book);
+        book = null;
+        System.out.println(&quot;======================结束遍历某一本书的内容=================&quot;);
+    }
+    else if (qName.equals(&quot;name&quot;)) {
+        book.setName(value);
+    }
+    else if (qName.equals(&quot;author&quot;)) {
+        book.setAuthor(value);
+    }
+    else if (qName.equals(&quot;year&quot;)) {
+        book.setYear(value);
+    }
+    else if (qName.equals(&quot;price&quot;)) {
+        book.setPrice(value);
+    }
+    else if (qName.equals(&quot;language&quot;)) {
+        book.setLanguage(value);
+    }
+}
+
+@Override
+public void characters(char[] ch, int start, int length)
+        throws SAXException {
+    // TODO Auto-generated method stub
+    super.characters(ch, start, length);
+    value = new String(ch, start, length);
+    if (!value.trim().equals(&quot;&quot;)) {
+        System.out.println(&quot;节点值是：&quot; + value);
+    }
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 1.3 JDOM解析</span><br><span class="line"></span><br><span class="line">	特征：</span><br><span class="line">	　　1、仅使用具体类，而不使用接口。</span><br><span class="line">	　　2、API大量使用了Collections类。</span><br><span class="line">	　　以下是解析代码：</span><br></pre></td></tr></table></figure></p>
+<p>public class JDOMTest {<br>    private static ArrayList<book> booksList = new ArrayList<book>();<br>    /**</book></book></p>
+<pre><code> * @param args
+ */
+public static void main(String[] args) {
+    // 进行对books.xml文件的JDOM解析
+    // 准备工作
+    // 1.创建一个SAXBuilder的对象
+    SAXBuilder saxBuilder = new SAXBuilder();
+    InputStream in;
+    try {
+        // 2.创建一个输入流，将xml文件加载到输入流中
+        in = new FileInputStream(&quot;src/res/books.xml&quot;);
+        InputStreamReader isr = new InputStreamReader(in, &quot;UTF-8&quot;);
+        // 3.通过saxBuilder的build方法，将输入流加载到saxBuilder中
+        Document document = saxBuilder.build(isr);
+        // 4.通过document对象获取xml文件的根节点
+        Element rootElement = document.getRootElement();
+        // 5.获取根节点下的子节点的List集合
+        List&lt;Element&gt; bookList = rootElement.getChildren();
+        // 继续进行解析
+        for (Element book : bookList) {
+            Book bookEntity = new Book();
+            System.out.println(&quot;======开始解析第&quot; + (bookList.indexOf(book) + 1)
+                    + &quot;书======&quot;);
+            // 解析book的属性集合
+            List&lt;Attribute&gt; attrList = book.getAttributes();
+            // //知道节点下属性名称时，获取节点值
+            // book.getAttributeValue(&quot;id&quot;);
+            // 遍历attrList(针对不清楚book节点下属性的名字及数量)
+            for (Attribute attr : attrList) {
+                // 获取属性名
+                String attrName = attr.getName();
+                // 获取属性值
+                String attrValue = attr.getValue();
+                System.out.println(&quot;属性名：&quot; + attrName + &quot;----属性值：&quot;
+                        + attrValue);
+                if (attrName.equals(&quot;id&quot;)) {
+                    bookEntity.setId(attrValue);
+                }
+            }
+            // 对book节点的子节点的节点名以及节点值的遍历
+            List&lt;Element&gt; bookChilds = book.getChildren();
+            for (Element child : bookChilds) {
+                System.out.println(&quot;节点名：&quot; + child.getName() + &quot;----节点值：&quot;
+                        + child.getValue());
+                if (child.getName().equals(&quot;name&quot;)) {
+                    bookEntity.setName(child.getValue());
+                }
+                else if (child.getName().equals(&quot;author&quot;)) {
+                    bookEntity.setAuthor(child.getValue());
+                }
+                else if (child.getName().equals(&quot;year&quot;)) {
+                    bookEntity.setYear(child.getValue());
+                }
+                else if (child.getName().equals(&quot;price&quot;)) {
+                    bookEntity.setPrice(child.getValue());
+                }
+                else if (child.getName().equals(&quot;language&quot;)) {
+                    bookEntity.setLanguage(child.getValue());
+                }
+            }
+            System.out.println(&quot;======结束解析第&quot; + (bookList.indexOf(book) + 1)
+                    + &quot;书======&quot;);
+            booksList.add(bookEntity);
+            bookEntity = null;
+            System.out.println(booksList.size());
+            System.out.println(booksList.get(0).getId());
+            System.out.println(booksList.get(0).getName());
+
+        }
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (JDOMException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 1.4、DOM4J解析</span><br><span class="line"></span><br><span class="line">	特征：</span><br><span class="line">	1、JDOM的一种智能分支，它合并了许多超出基本XML文档表示的功能。</span><br><span class="line">	2、它使用接口和抽象基本类方法。</span><br><span class="line">	3、具有性能优异、灵活性好、功能强大和极端易用的特点。</span><br><span class="line">	4、是一个开放源码的文件</span><br><span class="line">	以下是解析代码：</span><br></pre></td></tr></table></figure></p>
+<p>public class DOM4JTest {<br>    private static ArrayList<book> bookList = new ArrayList<book>();<br>    /**</book></book></p>
+<pre><code> * @param args
+ */
+public static void main(String[] args) {
+    // 解析books.xml文件
+    // 创建SAXReader的对象reader
+    SAXReader reader = new SAXReader();
+    try {
+        // 通过reader对象的read方法加载books.xml文件,获取docuemnt对象。
+        Document document = reader.read(new File(&quot;src/res/books.xml&quot;));
+        // 通过document对象获取根节点bookstore
+        Element bookStore = document.getRootElement();
+        // 通过element对象的elementIterator方法获取迭代器
+        Iterator it = bookStore.elementIterator();
+        // 遍历迭代器，获取根节点中的信息（书籍）
+        while (it.hasNext()) {
+            System.out.println(&quot;=====开始遍历某一本书=====&quot;);
+            Element book = (Element) it.next();
+            // 获取book的属性名以及 属性值
+            List&lt;Attribute&gt; bookAttrs = book.attributes();
+            for (Attribute attr : bookAttrs) {
+                System.out.println(&quot;属性名：&quot; + attr.getName() + &quot;--属性值：&quot;
+                        + attr.getValue());
+            }
+            Iterator itt = book.elementIterator();
+            while (itt.hasNext()) {
+                Element bookChild = (Element) itt.next();
+                System.out.println(&quot;节点名：&quot; + bookChild.getName() + &quot;--节点值：&quot; + bookChild.getStringValue());
+            }
+            System.out.println(&quot;=====结束遍历某一本书=====&quot;);
+        }
+    } catch (DocumentException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+}
+</code></pre><p>}<br><code>`</code></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java-xml-json/" rel="tag"># java xml json</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/30/vue跨域问题/" rel="prev" title="Vue跨域问题">
+                Vue跨域问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">林明星</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、json与xml互转"><span class="nav-number">1.</span> <span class="nav-text">1、json与xml互转</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-json与xml字符串互转demo"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 json与xml字符串互转demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-将xml文件解析成json"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 将xml文件解析成json</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林明星</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
