@@ -320,6 +320,267 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/跨域问题详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/05/跨域问题详解/" class="post-title-link" itemprop="url">跨域问题详解</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-05 14:15:35 / 修改时间：14:51:50" itemprop="dateCreated datePublished" datetime="2019-07-05T14:15:35+08:00">2019-07-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一、跨域问题简述"><a href="#一、跨域问题简述" class="headerlink" title="一、跨域问题简述"></a>一、跨域问题简述</h1><p>引起跨域的根本原因：浏览器的同源策略。</p>
+<pre><code>因为存在浏览器同源策略，所以才会有跨域问题。所谓同源是指：域名、协议、端口相同。
+</code></pre><p><img src="/2019/07/05/跨域问题详解/跨域图片.png" alt></p>
+<p>另外，同源策略又分为以下两种：</p>
+<pre><code>1、DOM 同源策略：禁止对不同源页面 DOM 进行操作。这里主要场景是 iframe 跨域的情况，不同域名的 iframe 是限制互相访问的。
+
+2、XMLHttpRequest 同源策略：禁止使用 XHR 对象向不同源的服务器地址发起 HTTP 请求。
+</code></pre><h1 id="二、为什么要有跨域限制"><a href="#二、为什么要有跨域限制" class="headerlink" title="二、为什么要有跨域限制"></a>二、为什么要有跨域限制</h1><p>如果没有 DOM 同源策略，也就是说不同域的 iframe 之间可以相互访问，那么黑客可以这样进行攻击：</p>
+<pre><code>1、做一个假网站，里面用 iframe 嵌套一个银行网站 http://mybank.com。
+2、把 iframe 宽高啥的调整到页面全部，这样用户进来除了域名，别的部分和银行的网站没有任何差别。
+3、这时如果用户输入账号密码，我们的主网站可以跨域访问到 http://mybank.com 的 dom 节点，就可以拿到用户的账户密码了    
+</code></pre><p>如果没有XMLHttpRequest 同源策略，那么黑客可以进行 CSRF（跨站请求伪造） 攻击：</p>
+<pre><code>1、用户登录了自己的银行页面 http://mybank.com，http://mybank.com 向用户的 cookie 中添加用户标识。
+2、用户浏览了恶意页面 http://evil.com，执行了页面中的恶意 AJAX 请求代码。
+3、http://evil.com 向 http://mybank.com 发起 AJAX HTTP 请求，请求会默认把 http://mybank.com 对应 cookie 也同时发送过去。
+4、银行页面从发送的 cookie 中提取用户标识，验证用户无误，response 中返回请求数据。此时数据就泄露了。
+5、而且由于 Ajax 在后台执行，用户无法感知这一过程。
+</code></pre><h1 id="三、跨域的解决方法"><a href="#三、跨域的解决方法" class="headerlink" title="三、跨域的解决方法"></a>三、跨域的解决方法</h1><h2 id="3-1-后端解决"><a href="#3-1-后端解决" class="headerlink" title="3.1 后端解决"></a>3.1 后端解决</h2><h3 id="3-1-1-对于springMvc框架："><a href="#3-1-1-对于springMvc框架：" class="headerlink" title="3.1.1 对于springMvc框架："></a>3.1.1 对于springMvc框架：</h3><pre><code>新建一个filter，在response中添加允许跨域的响应头。
+
+public class SimpleCORSFilter implements Filter{  
+
+    @Override  
+    public void destroy() {  
+
+    }  
+
+    @Override  
+    public void doFilter(ServletRequest req, ServletResponse res,  
+            FilterChain chain) throws IOException, ServletException {  
+            HttpServletResponse response = (HttpServletResponse) res;  
+            //设置允许跨域的请求源
+            response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);  
+            //设置允许跨域的请求方法
+            response.setHeader(&quot;Access-Control-Allow-Methods&quot;, &quot;POST, GET, OPTIONS, DELETE&quot;);  
+            //设置缓存的最大时间
+            response.setHeader(&quot;Access-Control-Max-Age&quot;, &quot;3600&quot;);  
+            //设置响应头
+            response.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;x-requested-with&quot;);  
+            chain.doFilter(req, res);  
+
+    }  
+
+    @Override  
+    public void init(FilterConfig arg0) throws ServletException {  
+
+    }  
+
+}
+
+另外在web.xml中注册该filter
+&lt;filter&gt;  
+  &lt;filter-name&gt;cors&lt;/filter-name&gt;  
+  &lt;filter-class&gt;com.ssm.web.filter.SimpleCORSFilter&lt;/filter-class&gt;  
+&lt;/filter&gt;  
+&lt;filter-mapping&gt;  
+  &lt;filter-name&gt;cors&lt;/filter-name&gt;  
+  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;  
+&lt;/filter-mapping&gt;
+</code></pre><h3 id="3-1-2-对于springBoot框架："><a href="#3-1-2-对于springBoot框架：" class="headerlink" title="3.1.2 对于springBoot框架："></a>3.1.2 对于springBoot框架：</h3><p>添加以下配置即可：</p>
+<pre><code>package com.yunkai.psbmngboot.config;
+import com.yunkai.psbmngboot.interceptor.WebInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.*;
+
+/**
+ * CorsConfig
+ *
+ * @author gsong
+ * @date 2019/05/14 00:53
+ * 跨域
+ */
+@Configuration
+public class WebConfigurer extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private WebInterceptor webInterceptor;
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping(&quot;/**&quot;)
+                .allowedOrigins(&quot;*&quot;)
+                .allowCredentials(true)
+                .allowedMethods(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;)
+                .maxAge(36000);
+        System.out.println(&quot;xxx&quot;);
+    }
+ }
+</code></pre><h2 id="3-2-前端解决"><a href="#3-2-前端解决" class="headerlink" title="3.2 前端解决"></a>3.2 前端解决</h2><h2 id="3-2-1-vue框架解决方法"><a href="#3-2-1-vue框架解决方法" class="headerlink" title="3.2.1 vue框架解决方法"></a>3.2.1 vue框架解决方法</h2><p>在config/index.js中的dev配置中添加proxyTable,’/api’是一个拦截表示，在开发环境中请求时需要在url中统一加上’/api’, pathRewrite 会在请求时去除/api，target是需要跨域的请求地址：</p>
+<pre><code>dev: {
+    env: require(&apos;./dev.env&apos;),
+    host: &apos;localhost&apos;,
+    port: 9520,
+    autoOpenBrowser: false,
+    autoOpenPage: &apos;/login&apos;,
+    assetsSubDirectory: &apos;static&apos;,
+    assetsPublicPath: &apos;/&apos;,
+    proxyTable: {
+      &apos;/api&apos;: {
+        target: &apos;http://localhost:9999&apos;,
+        changeOrigin: true,
+        pathRewrite: {
+          &apos;^/api&apos;: &apos;/&apos;
+        }
+      }
+    },
+    cssSourceMap: false
+}
+</code></pre><h2 id="3-2-2-nginx解决跨域问题"><a href="#3-2-2-nginx解决跨域问题" class="headerlink" title="3.2.2 nginx解决跨域问题"></a>3.2.2 nginx解决跨域问题</h2><p>在开发环境中请求时需要在url中统一加上’/api’, proxy_pass是需要跨域的请求地址。在server中配置：</p>
+<pre><code>location / {
+    proxy_pass http://localhost:81;
+    proxy_redirect default;
+}
+
+ #添加访问目录为/apis的代理配置
+location /apis {
+    rewrite  ^/apis/(.*)$ /$1 break;
+    proxy_pass   http://localhost:82;
+}
+</code></pre>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/27/Elasticsearch的安装与使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1562,183 +1823,6 @@ c、安卓部分代码实现：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/30/java知识点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林明星">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/30/java知识点/" class="post-title-link" itemprop="url">Java知识点小记</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-30 16:08:37" itemprop="dateCreated datePublished" datetime="2019-04-30T16:08:37+08:00">2019-04-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-15 16:06:29" itemprop="dateModified" datetime="2019-05-15T16:06:29+08:00">2019-05-15</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/混合app开发/" itemprop="url" rel="index"><span itemprop="name">混合app开发</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1、java获取src-resources目录下的文件"><a href="#1、java获取src-resources目录下的文件" class="headerlink" title="1、java获取src/resources目录下的文件"></a>1、java获取src/resources目录下的文件</h2><pre><code>1、System.out.println(this.getClass().getClassLoader().getResource(&quot;test.xml&quot;).getPath());
-2、System.out.println(this.getClass().getClassLoader().getResource(&quot;test.xml&quot;).getFile());
-3、System.out.println(this.getClass().getResource(&quot;/&quot;).getPath()+&quot;test.xml&quot;);
-</code></pre><h2 id="2、-RequestBody和-ResponseBody"><a href="#2、-RequestBody和-ResponseBody" class="headerlink" title="2、@RequestBody和@ResponseBody"></a>2、@RequestBody和@ResponseBody</h2><p>在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。</p>
-<p>我们可以用下面的图，简单描述一下这个过程。<br><img src="/2019/04/30/java知识点/img1.png" alt>      </p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/30/vue跨域问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1900,6 +1984,187 @@ c、安卓部分代码实现：
     access_log off;
 }
 </code></pre><p><code>`</code>    </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/30/java知识点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/30/java知识点/" class="post-title-link" itemprop="url">Java知识点小记</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-30 16:08:37" itemprop="dateCreated datePublished" datetime="2019-04-30T16:08:37+08:00">2019-04-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-29 15:07:32" itemprop="dateModified" datetime="2019-05-29T15:07:32+08:00">2019-05-29</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/混合app开发/" itemprop="url" rel="index"><span itemprop="name">混合app开发</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1、java获取src-resources目录下的文件"><a href="#1、java获取src-resources目录下的文件" class="headerlink" title="1、java获取src/resources目录下的文件"></a>1、java获取src/resources目录下的文件</h2><pre><code>1、System.out.println(this.getClass().getClassLoader().getResource(&quot;test.xml&quot;).getPath());
+2、System.out.println(this.getClass().getClassLoader().getResource(&quot;test.xml&quot;).getFile());
+3、System.out.println(this.getClass().getResource(&quot;/&quot;).getPath()+&quot;test.xml&quot;);
+</code></pre><p>当工程部署到Tomcat中时，按照上边方式，则会出现找不到该文件路径的异常。经搜索资料知道，Java工程打包部署到Tomcat中时，test.xml的路径变到顶层（classes下）：</p>
+<p>并且，此时读取文件需要采用流（stream）的方式读取，如下：</p>
+<pre><code>InputStream in = this.getClass().getResourceAsStream(&quot;/test.xml&quot;)
+</code></pre><p>其中properties前的斜杠，相对于调用类，共同的顶层路径。</p>
+<h2 id="2、-RequestBody和-ResponseBody"><a href="#2、-RequestBody和-ResponseBody" class="headerlink" title="2、@RequestBody和@ResponseBody"></a>2、@RequestBody和@ResponseBody</h2><p>在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。</p>
+<p>我们可以用下面的图，简单描述一下这个过程。<br><img src="/2019/04/30/java知识点/img1.png" alt>      </p>
 
           
         
@@ -2448,7 +2713,7 @@ public static void main(String[] args) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

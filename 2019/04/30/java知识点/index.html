@@ -104,7 +104,7 @@
 <meta property="og:description" content="1、java获取src/resources目录下的文件1、System.out.println(this.getClass().getClassLoader().getResource(&amp;quot;test.xml&amp;quot;).getPath()); 2、System.out.println(this.getClass().getClassLoader().getResource(&amp;quot;t">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2019/04/30/java知识点/img1.png">
-<meta property="og:updated_time" content="2019-05-15T08:06:29.191Z">
+<meta property="og:updated_time" content="2019-05-29T07:07:32.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java知识点小记">
 <meta name="twitter:description" content="1、java获取src/resources目录下的文件1、System.out.println(this.getClass().getClassLoader().getResource(&amp;quot;test.xml&amp;quot;).getPath()); 2、System.out.println(this.getClass().getClassLoader().getResource(&amp;quot;t">
@@ -385,7 +385,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-15 16:06:29" itemprop="dateModified" datetime="2019-05-15T16:06:29+08:00">2019-05-15</time>
+                <time title="修改时间：2019-05-29 15:07:32" itemprop="dateModified" datetime="2019-05-29T15:07:32+08:00">2019-05-29</time>
               
             
           </span>
@@ -440,7 +440,11 @@
         <h2 id="1、java获取src-resources目录下的文件"><a href="#1、java获取src-resources目录下的文件" class="headerlink" title="1、java获取src/resources目录下的文件"></a>1、java获取src/resources目录下的文件</h2><pre><code>1、System.out.println(this.getClass().getClassLoader().getResource(&quot;test.xml&quot;).getPath());
 2、System.out.println(this.getClass().getClassLoader().getResource(&quot;test.xml&quot;).getFile());
 3、System.out.println(this.getClass().getResource(&quot;/&quot;).getPath()+&quot;test.xml&quot;);
-</code></pre><h2 id="2、-RequestBody和-ResponseBody"><a href="#2、-RequestBody和-ResponseBody" class="headerlink" title="2、@RequestBody和@ResponseBody"></a>2、@RequestBody和@ResponseBody</h2><p>在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。</p>
+</code></pre><p>当工程部署到Tomcat中时，按照上边方式，则会出现找不到该文件路径的异常。经搜索资料知道，Java工程打包部署到Tomcat中时，test.xml的路径变到顶层（classes下）：</p>
+<p>并且，此时读取文件需要采用流（stream）的方式读取，如下：</p>
+<pre><code>InputStream in = this.getClass().getResourceAsStream(&quot;/test.xml&quot;)
+</code></pre><p>其中properties前的斜杠，相对于调用类，共同的顶层路径。</p>
+<h2 id="2、-RequestBody和-ResponseBody"><a href="#2、-RequestBody和-ResponseBody" class="headerlink" title="2、@RequestBody和@ResponseBody"></a>2、@RequestBody和@ResponseBody</h2><p>在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。</p>
 <p>我们可以用下面的图，简单描述一下这个过程。<br><img src="/2019/04/30/java知识点/img1.png" alt>      </p>
 
       
@@ -472,8 +476,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/30/vue跨域问题/" rel="next" title="Vue跨域问题">
-                <i class="fa fa-chevron-left"></i> Vue跨域问题
+              <a href="/2019/04/30/java中xml与json互转/" rel="next" title="java中xml与json互转">
+                <i class="fa fa-chevron-left"></i> java中xml与json互转
               </a>
             
           </div>
@@ -482,8 +486,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/04/30/cordova与js互调（以信鸽为例）/" rel="prev" title="Cordova与原生安卓互相调用（混合app开发）">
-                Cordova与原生安卓互相调用（混合app开发） <i class="fa fa-chevron-right"></i>
+              <a href="/2019/04/30/vue跨域问题/" rel="prev" title="Vue跨域问题">
+                Vue跨域问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -553,7 +557,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
