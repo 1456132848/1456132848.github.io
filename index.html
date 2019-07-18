@@ -320,6 +320,662 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/java连接ftp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/18/java连接ftp/" class="post-title-link" itemprop="url">java连接ftp</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-18 22:37:53 / 修改时间：22:49:11" itemprop="dateCreated datePublished" datetime="2019-07-18T22:37:53+08:00">2019-07-18</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一、java连接Ftp方法工具类"><a href="#一、java连接Ftp方法工具类" class="headerlink" title="一、java连接Ftp方法工具类"></a>一、java连接Ftp方法工具类</h1><pre><code>package com.yunkai.psbmngboot.utils;
+
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Description TODO
+ * @Author linmingxing
+ * @Date 2019/6/5 下午3:24
+ **/
+public class FtpUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(FtpUtil.class);
+
+    /**
+     * 获取FTPClient对象
+     * @param ftpHost 服务器IP
+     * @param ftpPort 服务器端口号
+     * @param ftpUserName 用户名
+     * @param ftpPassword 密码
+     * @return FTPClient
+     */
+    public static FTPClient getFTPClient(String ftpHost, int ftpPort, String ftpUserName, String ftpPassword) {
+        FTPClient ftp = null;
+        try {
+            ftp = new FTPClient();
+            ftp.setConnectTimeout(300000);
+            ftp.setControlEncoding(&quot;UTF-8&quot;);
+            // 连接FPT服务器,设置IP及端口
+            logger.info(&quot;开始连接connect&quot;+ftpHost+&quot;===&quot;+ftpPort+&quot;===&quot;+ftpUserName+&quot;====&quot;+ftpPassword+&quot;=====&quot;);
+            ftp.connect(ftpHost, ftpPort);
+            // 设置用户名和密码
+            logger.info(&quot;开始登录&quot;);
+            ftp.login(ftpUserName, ftpPassword);
+            // 设置连接超时时间,5000毫秒
+
+            // 设置中文编码集，防止中文乱码
+            if (!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
+                logger.info(&quot;未连接到FTP，用户名或密码错误&quot;);
+                ftp.disconnect();
+            } else {
+                logger.info(&quot;FTP连接成功&quot;);
+            }
+        } catch (SocketException e) {
+            logger.info(&quot;FTP的IP地址可能错误，请正确配置&quot;,e);
+        } catch (IOException e) {
+            logger.info(&quot;FTP的端口错误,请正确配置&quot;,e);
+        }
+        return ftp;
+    }
+
+    /**
+     * 关闭FTP方法
+     * @param ftp
+     * @return
+     */
+    public static boolean closeFTP(FTPClient ftp){
+
+        try {
+            ftp.logout();
+            logger.info(&quot;FTP关闭成功&quot;);
+        } catch (Exception e) {
+            logger.error(&quot;FTP关闭失败&quot;);
+        }finally{
+            if (ftp.isConnected()) {
+                try {
+                    ftp.disconnect();
+                } catch (IOException ioe) {
+                    logger.error(&quot;FTP关闭失败&quot;);
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 下载FTP下指定文件
+     * @param ftp FTPClient对象
+     * @param filePath FTP文件路径
+     * @param fileName 文件名
+     * @param downPath 下载保存的目录
+     * @return
+     */
+    public static File downLoadFTP(FTPClient ftp, String filePath, String fileName,
+                               String downPath) {
+        // 默认失败
+        boolean flag;
+
+        try {
+            // 跳转到文件目录
+            ftp.changeWorkingDirectory(filePath);
+            FTPFile[] files = ftp.listFiles();
+            for (FTPFile file : files) {
+                // 取得指定文件并下载
+                if (file.getName().equals(fileName)) {
+                    File downFile = new File(downPath + file.getName());
+                    OutputStream out = new FileOutputStream(downFile);
+                    // 绑定输出流下载文件,需要设置编码集，不然可能出现文件为空的情况
+                    flag = ftp.retrieveFile(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;UTF-8&quot;), out);
+                    out.flush();
+                    out.close();
+                    if(flag){
+                        logger.info(&quot;下载成功&quot;);
+                        return downFile;
+                    }else{
+                        logger.error(&quot;下载失败&quot;);
+                        return null;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error(&quot;下载失败&quot;);
+        }
+        return null;
+    }
+
+    /**
+     * FTP文件上传工具类
+     * @param ftp
+     * @param filePath
+     * @param ftpPath
+     * @return
+     */
+    public static boolean uploadFile(FTPClient ftp,String filePath,String ftpPath){
+        boolean flag = false;
+        InputStream in = null;
+        try {
+            // 设置PassiveMode传输
+//            ftp.enterLocalPassiveMode();
+            //设置二进制传输，使用BINARY_FILE_TYPE，ASC容易造成文件损坏
+            ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+            //判断FPT目标文件夹时候存在不存在则创建
+            if(!ftp.changeWorkingDirectory(ftpPath)){
+                ftp.makeDirectory(ftpPath);
+            }
+            //跳转目标目录
+            ftp.changeWorkingDirectory(ftpPath);
+
+            //上传文件
+            File file = new File(filePath);
+            in = new FileInputStream(file);
+            String tempName = ftpPath+File.separator+file.getName();
+            flag = ftp.storeFile(new String (tempName.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;),in);
+            if(flag){
+                logger.info(&quot;上传成功&quot;);
+            }else{
+                logger.error(&quot;上传失败&quot;);
+            }
+        } catch (Exception e) {
+            logger.error(&quot;上传失败&quot;,e);
+        }finally{
+            try {
+                in.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                logger.error(&quot;上传失败&quot;,e);
+            }
+        }
+        return flag;
+    }
+
+
+    /**
+     * FPT上文件的复制
+     * @param ftp  FTPClient对象
+     * @param olePath 原文件地址
+     * @param newPath 新保存地址
+     * @param fileName 文件名
+     * @return
+     */
+    public boolean copyFile(FTPClient ftp, String olePath, String newPath,String fileName) {
+        boolean flag = false;
+
+        try {
+            // 跳转到文件目录
+            ftp.changeWorkingDirectory(olePath);
+            //设置连接模式，不设置会获取为空
+            ftp.enterLocalPassiveMode();
+            // 获取目录下文件集合
+            FTPFile[] files = ftp.listFiles();
+            ByteArrayInputStream  in = null;
+            ByteArrayOutputStream out = null;
+            for (FTPFile file : files) {
+                // 取得指定文件并下载
+                if (file.getName().equals(fileName)) {
+
+                    //读取文件，使用下载文件的方法把文件写入内存,绑定到out流上
+                    out = new ByteArrayOutputStream();
+                    ftp.retrieveFile(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;), out);
+                    in = new ByteArrayInputStream(out.toByteArray());
+                    //创建新目录
+                    ftp.makeDirectory(newPath);
+                    //文件复制，先读，再写
+                    //二进制
+                    ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+                    flag = ftp.storeFile(newPath+File.separator+(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;)),in);
+                    out.flush();
+                    out.close();
+                    in.close();
+                    if(flag){
+                        logger.info(&quot;转存成功&quot;);
+                    }else{
+                        logger.error(&quot;复制失败&quot;);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error(&quot;复制失败&quot;);
+        }
+        return flag;
+    }
+
+    /**
+     * 实现文件的移动，这里做的是一个文件夹下的所有内容移动到新的文件，
+     * 如果要做指定文件移动，加个判断判断文件名
+     * 如果不需要移动，只是需要文件重命名，可以使用ftp.rename(oleName,newName)
+     * @param ftp
+     * @param oldPath
+     * @param newPath
+     * @return
+     */
+    public boolean moveFile(FTPClient ftp,String oldPath,String newPath){
+        boolean flag = false;
+
+        try {
+            ftp.changeWorkingDirectory(oldPath);
+            ftp.enterLocalPassiveMode();
+            //获取文件数组
+            FTPFile[] files = ftp.listFiles();
+            //新文件夹不存在则创建
+            if(!ftp.changeWorkingDirectory(newPath)){
+                ftp.makeDirectory(newPath);
+            }
+            //回到原有工作目录
+            ftp.changeWorkingDirectory(oldPath);
+            for (FTPFile file : files) {
+
+                //转存目录
+                flag = ftp.rename(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;), newPath+File.separator+new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+                if(flag){
+                    logger.info(file.getName()+&quot;移动成功&quot;);
+                }else{
+                    logger.error(file.getName()+&quot;移动失败&quot;);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(&quot;移动文件失败&quot;,e);
+        }
+        return flag;
+    }
+
+    /**
+     * 删除FTP上指定文件夹下文件及其子文件方法，添加了对中文目录的支持
+     * @param ftp FTPClient对象
+     * @param FtpFolder 需要删除的文件夹
+     * @return
+     */
+    public boolean deleteByFolder(FTPClient ftp,String FtpFolder){
+        boolean flag = false;
+        try {
+            ftp.changeWorkingDirectory(new String(FtpFolder.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+            ftp.enterLocalPassiveMode();
+            FTPFile[] files = ftp.listFiles();
+            for (FTPFile file : files) {
+                //判断为文件则删除
+                if(file.isFile()){
+                    ftp.deleteFile(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+                }
+                //判断是文件夹
+                if(file.isDirectory()){
+                    String childPath = FtpFolder + File.separator+file.getName();
+                    //递归删除子文件夹
+                    deleteByFolder(ftp,childPath);
+                }
+            }
+            //循环完成后删除文件夹
+            flag = ftp.removeDirectory(new String(FtpFolder.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+            if(flag){
+                logger.info(FtpFolder+&quot;文件夹删除成功&quot;);
+            }else{
+                logger.error(FtpFolder+&quot;文件夹删除成功&quot;);
+            }
+
+        } catch (Exception e) {
+            logger.error(&quot;删除失败&quot;,e);
+        }
+        return flag;
+
+    }
+
+    /**
+     * 遍历解析文件夹下所有文件
+     * @param folderPath 需要解析的的文件夹
+     * @param ftp FTPClient对象
+     * @return
+     */
+    public List&lt;String&gt; readFileByFolder(FTPClient ftp, String folderPath){
+        List&lt;String&gt; jsonList = new ArrayList&lt;&gt;();
+        boolean flage = false;
+        try {
+//            ftp.changeWorkingDirectory(new String(folderPath.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+            //设置FTP连接模式
+//            ftp.enterLocalPassiveMode();
+            //获取指定目录下文件文件对象集合
+            FTPFile files[] = ftp.listFiles();
+            InputStream in = null;
+            BufferedReader reader = null;
+            for (FTPFile file : files) {
+                //判断为txt文件则解析
+                if(file.isFile()){
+                    String fileName = file.getName();
+                    if(fileName.endsWith(&quot;.txt&quot;)){
+                        in = ftp.retrieveFileStream(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+                        reader = new BufferedReader(new InputStreamReader(in, &quot;UTF-8&quot;));
+                        String temp;
+                        StringBuffer buffer = new StringBuffer();
+                        while((temp = reader.readLine())!=null){
+                            buffer.append(temp);
+                        }
+                        if(reader!=null){
+                            reader.close();
+                        }
+                        if(in!=null){
+                            in.close();
+                        }
+                        //ftp.retrieveFileStream使用了流，需要释放一下，不然会返回空指针
+                        ftp.completePendingCommand();
+                        //这里就把一个txt文件完整解析成了个字符串，就可以调用实际需要操作的方法
+                        System.out.println(buffer.toString());
+                        jsonList.add(buffer.toString());
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error(&quot;文件解析失败&quot;,e);
+        }
+
+        return jsonList;
+
+    }
+
+
+
+
+    public static void main(String[] args) throws IOException {
+//        FTPClient ftp = FtpUtil.getFTPClient(&quot;101.132.130.77&quot;, 21, &quot;ftpuser&quot;,&quot;taoyeti520&quot;);
+//        test.downLoadFTP(ftp, &quot;/file&quot;, &quot;你好.jpg&quot;, &quot;C:\\下载&quot;);
+        //test.copyFile(ftp, &quot;/file&quot;, &quot;/txt/temp&quot;, &quot;你好.txt&quot;);
+        //test.moveFile(ftp, &quot;/file&quot;, &quot;/txt/temp&quot;);
+        //test.deleteByFolder(ftp, &quot;/txt&quot;);
+//        test.readFileByFolder(ftp, &quot;/home/ftpuser/&quot;);
+//        test.closeFTP(ftp);
+
+    }
+
+
+}
+
+
+</code></pre><h1 id="二、-注意事项"><a href="#二、-注意事项" class="headerlink" title="二、 注意事项"></a>二、 注意事项</h1><pre><code>1、一般的在liunx服务器上的ftp，需要通过enterLocalPassiveMode()方法设置为被动模式，在window服务器上的ftp，一般不用设置，默认为主动模式。连接模式如果没有设置正确的话，获取文件的方法会假死，其他操作会报错。
+
+2、获取指定目录文件下的方法listFiles(&quot;path&quot;)的参数为服务器上设置的ftp的根路径（用终端连接到ftp后，输入命令pwd后得到的就是ftp的根路径）
+</code></pre>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/sublime填坑之旅/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/05/sublime填坑之旅/" class="post-title-link" itemprop="url">sublime填坑之旅</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-05 16:20:18 / 修改时间：16:21:21" itemprop="dateCreated datePublished" datetime="2019-07-05T16:20:18+08:00">2019-07-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>1、复制完以后，粘贴的时候按下 ctrl+shift+v 就可以使代码整齐粘贴不错位。否则从第二行开始会错位
+</code></pre>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/跨域问题详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -365,12 +1021,24 @@
                 
               
 
-              <time title="创建时间：2019-07-05 14:15:35 / 修改时间：14:51:50" itemprop="dateCreated datePublished" datetime="2019-07-05T14:15:35+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-05 14:15:35" itemprop="dateCreated datePublished" datetime="2019-07-05T14:15:35+08:00">2019-07-05</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-08 15:36:05" itemprop="dateModified" datetime="2019-07-08T15:36:05+08:00">2019-07-08</time>
               
             
           </span>
@@ -443,7 +1111,7 @@ public class SimpleCORSFilter implements Filter{
             //设置缓存的最大时间
             response.setHeader(&quot;Access-Control-Max-Age&quot;, &quot;3600&quot;);  
             //设置响应头
-            response.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;x-requested-with&quot;);  
+            response.setHeader(&quot;Access-Control-Allow-Headers&quot;, &quot;content-type&quot;);
             chain.doFilter(req, res);  
 
     }  
@@ -488,12 +1156,15 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping(&quot;/**&quot;)
                 .allowedOrigins(&quot;*&quot;)
+                //允许携带cookies
                 .allowCredentials(true)
                 .allowedMethods(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;)
                 .maxAge(36000);
         System.out.println(&quot;xxx&quot;);
     }
  }
+
+ 注意：跨域请求时，前端ajax请求时需要设置withCredentials: true,才能够将cookies带上。
 </code></pre><h2 id="3-2-前端解决"><a href="#3-2-前端解决" class="headerlink" title="3.2 前端解决"></a>3.2 前端解决</h2><h2 id="3-2-1-vue框架解决方法"><a href="#3-2-1-vue框架解决方法" class="headerlink" title="3.2.1 vue框架解决方法"></a>3.2.1 vue框架解决方法</h2><p>在config/index.js中的dev配置中添加proxyTable,’/api’是一个拦截表示，在开发环境中请求时需要在url中统一加上’/api’, pathRewrite 会在请求时去除/api，target是需要跨域的请求地址：</p>
 <pre><code>dev: {
     env: require(&apos;./dev.env&apos;),
@@ -1823,223 +2494,6 @@ c、安卓部分代码实现：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/30/vue跨域问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林明星">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/30/vue跨域问题/" class="post-title-link" itemprop="url">Vue跨域问题</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-30 16:08:37" itemprop="dateCreated datePublished" datetime="2019-04-30T16:08:37+08:00">2019-04-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-14 14:28:36" itemprop="dateModified" datetime="2019-05-14T14:28:36+08:00">2019-05-14</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">vue</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="1、本地解决vue跨域问题"><a href="#1、本地解决vue跨域问题" class="headerlink" title="1、本地解决vue跨域问题"></a>1、本地解决vue跨域问题</h1><p>在congif/index.js的dev节点下中配置如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">proxyTable: &#123;</span><br><span class="line">  &apos;/api/teamall&apos;: &#123;</span><br><span class="line">    target: &apos;https://fnrscm.zntrade.cn&apos;,</span><br><span class="line">    changeOrigin: true,</span><br><span class="line">    secure: false,</span><br><span class="line">    pathRewrite: &#123;</span><br><span class="line">      &quot;^/api/teamall&quot;: &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>/api/teamall是自己添加的前缀。该前缀可以使用aiox属性添加。在main.js中添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">import Axios from &apos;axios&apos;</span><br><span class="line">import VueAxios from &apos;vue-axios&apos;</span><br><span class="line">Vue.use(VueAxios, Axios)</span><br><span class="line">Axios.defaults.baseURL = &apos;api/teamall/&apos;  这样也ok的</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line">判断是开发模式还是本地模式，其实不需要这么麻烦 直接</span><br><span class="line"></span><br><span class="line">	const isProdMode = Object.is(process.env.NODE_ENV, &apos;production&apos;);</span><br><span class="line">	module.exports = &#123;</span><br><span class="line">	  baseUrl: isProdMode ? &apos;api.shudong.wang/v1/&apos; : &apos;v1/&apos;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">页面中访问</span><br><span class="line"></span><br><span class="line">	methods:&#123;</span><br><span class="line">	    getArticleList()&#123;</span><br><span class="line">	      console.log(111111111)</span><br><span class="line">	          this.$http.get(&quot;/article/list&quot;) // this.$http  axios使用的一种方式</span><br><span class="line">	          .then((response)=&gt;&#123;</span><br><span class="line">	              console.log(response.data)</span><br><span class="line">	              let res = response.data;</span><br><span class="line">	              this.articleList = res.data;</span><br><span class="line">		</span><br><span class="line">	          &#125;)</span><br><span class="line">	          .catch((error) =&gt;&#123;</span><br><span class="line">	            console.log(error)</span><br><span class="line">	          &#125;)</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	</span><br><span class="line">上面请求的例子中相当于访问： localhost:8080/api/teamall/article/list</span><br><span class="line"></span><br><span class="line">这样就可以解决跨域问题，其实最终访问的是 localhost:3000/article/list</span><br><span class="line">	</span><br><span class="line"># 2、服务器端解决vue跨域问题</span><br><span class="line">	</span><br><span class="line">本地可以使用proxyTable 解决跨域问题，那么服务端怎么解决跨域问题呢？</span><br><span class="line"></span><br><span class="line">答案：使用nginx反向代理</span><br></pre></td></tr></table></figure>
-<p>server<br>    {<br>        listen 80;</p>
-<pre><code>    #listen [::]:80;
-    server_name zhenfan.shudong.wang ; #  你的域名不需要加http 
-    index index.html index.htm index.php default.html default.htm default.php;
-    root  /home/wwwroot/zhenfan/dist;
-
-
-    include none.conf;
-    #error_page   404   /404.html;
-
-    # Deny access to PHP files in specific directory
-    #location ~ /(wp-content|uploads|wp-includes|images)/.*\.php$ { deny all; }
-
-    include enable-php.conf;
-
-    location /api/teamall {
-       proxy_pass http://127.0.0.1:3000/; # 当访问v1的时候默认转发到 3000端
-    }
-
-    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
-    {
-        expires      30d;
-    }
-
-    location ~ .*\.(js|css)?$
-    {
-        expires      12h;
-    }
-
-    location ~ /.well-known {
-        allow all;
-    }
-
-    location ~ /\.
-    {
-        deny all;
-    }
-
-    access_log off;
-}
-</code></pre><p><code>`</code>    </p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/30/java知识点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2206,474 +2660,13 @@ c、安卓部分代码实现：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/30/java中xml与json互转/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林明星">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/30/java中xml与json互转/" class="post-title-link" itemprop="url">java中xml与json互转</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-30 16:08:37" itemprop="dateCreated datePublished" datetime="2019-04-30T16:08:37+08:00">2019-04-30</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-13 17:04:18" itemprop="dateModified" datetime="2019-05-13T17:04:18+08:00">2019-05-13</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java-xml/" itemprop="url" rel="index"><span itemprop="name">java-xml</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="1、json与xml互转"><a href="#1、json与xml互转" class="headerlink" title="1、json与xml互转"></a>1、json与xml互转</h1><h2 id="1-1-json与xml字符串互转demo"><a href="#1-1-json与xml字符串互转demo" class="headerlink" title="1.1 json与xml字符串互转demo"></a>1.1 json与xml字符串互转demo</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">import com.gargoylesoftware.htmlunit.javascript.host.xml.XMLSerializer;</span><br><span class="line">import org.json.JSONException;</span><br><span class="line">import org.json.JSONObject;</span><br><span class="line">import org.json.XML;</span><br><span class="line">import org.junit.jupiter.api.Test;</span><br><span class="line"></span><br><span class="line">import javax.xml.crypto.dsig.XMLSignature;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @Description TODO</span><br><span class="line"> * @Author linmingxing</span><br><span class="line"> * @Date 2019/5/9 上午10:06</span><br><span class="line"> **/</span><br><span class="line">public class DeliverOneATest &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        String xml = &quot;&lt;Response&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;logisticProviderID&gt;YTO&lt;/logisticProviderID&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;txLogisticID&gt;2019050910&lt;/txLogisticID&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;clientID&gt;K21000119&lt;/clientID&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;mailNo&gt;G10127901493&lt;/mailNo&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;distributeInfo&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;shortAddress&gt;900-074-00-010&lt;/shortAddress&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;consigneeBranchCode&gt;290082&lt;/consigneeBranchCode&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;packageCenterCode&gt;290911&lt;/packageCenterCode&gt;\n&quot; +</span><br><span class="line">                &quot;\t\t&lt;packageCenterName&gt;&lt;/packageCenterName&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;/distributeInfo&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;code&gt;200&lt;/code&gt;\n&quot; +</span><br><span class="line">                &quot;\t&lt;success&gt;true&lt;/success&gt;\n&quot; +</span><br><span class="line">                &quot;&lt;/Response&gt;&quot;;</span><br><span class="line">        try &#123;</span><br><span class="line">            //xml字符串转json</span><br><span class="line">            JSONObject jsonObject = XML.toJSONObject(xml);</span><br><span class="line">            //JSONObject转换为xml字符串</span><br><span class="line">            String s = XML.toString(jsonObject);</span><br><span class="line">            System.out.println(jsonObject.toString());</span><br><span class="line">            System.out.println(s);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="1-2-将xml文件解析成json"><a href="#1-2-将xml文件解析成json" class="headerlink" title="1.2 将xml文件解析成json"></a>1.2 将xml文件解析成json</h2><pre><code>添加maven依赖：
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.json&lt;/groupId&gt;
-        &lt;artifactId&gt;json&lt;/artifactId&gt;
-        &lt;version&gt;20180813&lt;/version&gt;
-    &lt;/dependency&gt;
-
-xml文件
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.1&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;studentList&gt;</span><br><span class="line">    &lt;student id=&quot;A01&quot; class=&quot;A&quot;&gt;</span><br><span class="line">        &lt;name&gt;小明&lt;/name&gt;</span><br><span class="line">        &lt;age&gt;19&lt;/age&gt;</span><br><span class="line">        &lt;gender&gt;man&lt;/gender&gt;</span><br><span class="line">        &lt;score&gt;</span><br><span class="line">            &lt;subject name=&quot;Advanced Mathematics&quot;&gt;90&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;College English&quot;&gt;85&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;C++Programming&quot;&gt;88&lt;/subject&gt;</span><br><span class="line">        &lt;/score&gt;</span><br><span class="line">    &lt;/student&gt;</span><br><span class="line"></span><br><span class="line">    &lt;student id=&quot;A02&quot; class=&quot;B&quot;&gt;</span><br><span class="line">        &lt;name&gt;小红&lt;/name&gt;</span><br><span class="line">        &lt;age&gt;20&lt;/age&gt;</span><br><span class="line">        &lt;gender&gt;woman&lt;/gender&gt;</span><br><span class="line">        &lt;score&gt;</span><br><span class="line">            &lt;subject name=&quot;Data Structure&quot;&gt;80&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;JavaProgramming&quot;&gt;90&lt;/subject&gt;</span><br><span class="line">        &lt;/score&gt;</span><br><span class="line">    &lt;/student&gt;</span><br><span class="line"></span><br><span class="line">    &lt;student1 id=&quot;A02&quot; class=&quot;B&quot;&gt;</span><br><span class="line">        &lt;name&gt;小红&lt;/name&gt;</span><br><span class="line">        &lt;age&gt;20&lt;/age&gt;</span><br><span class="line">        &lt;gender&gt;woman&lt;/gender&gt;</span><br><span class="line">        &lt;score&gt;</span><br><span class="line">            &lt;subject name=&quot;Data Structure&quot;&gt;80&lt;/subject&gt;</span><br><span class="line">            &lt;subject name=&quot;JavaProgramming&quot;&gt;90&lt;/subject&gt;</span><br><span class="line">        &lt;/score&gt;</span><br><span class="line">    &lt;/student1&gt;</span><br><span class="line">&lt;/studentList&gt;</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line">	java代码</span><br></pre></td></tr></table></figure>
-<p>package com.linmx.parsexml.OrgJsonJson;</p>
-<p>import org.json.JSONObject;<br>import org.json.XML;</p>
-<p>import java.io.*;</p>
-<p>/**</p>
-<ul>
-<li>@Description TODO</li>
-<li>@Author linmingxing</li>
-<li><p>@Date 2019/5/10 下午3:46<br>**/<br>public class XmlService {</p>
-<p> //path为xml文件的路径<br> public JSONObject parseXml(String path){</p>
-<pre><code>try {
-    Reader reader = new FileReader(path);
-    JSONObject jsonObject = XML.toJSONObject(reader);
-    return jsonObject;
-} catch (FileNotFoundException e) {
-    e.printStackTrace();
-}
-return null;
-</code></pre><p> }<br>}</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">	解析出来的jsonObject使用.toString方法即可获取json字符串。</span><br><span class="line">	上面的例子解析出的结果如下：</span><br><span class="line">	&#123;&quot;studentList&quot;:</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;student&quot;:[</span><br><span class="line">				&#123;</span><br><span class="line">					&quot;score&quot;:&#123;</span><br><span class="line">						&quot;subject&quot;:[</span><br><span class="line">							&#123;&quot;name&quot;:&quot;Advanced Mathematics&quot;,&quot;content&quot;:90&#125;,</span><br><span class="line">							&#123;&quot;name&quot;:&quot;College English&quot;,&quot;content&quot;:85&#125;,</span><br><span class="line">							&#123;&quot;name&quot;:&quot;C++Programming&quot;,&quot;content&quot;:88&#125;</span><br><span class="line">						]</span><br><span class="line">					&#125;,</span><br><span class="line">					&quot;gender&quot;:&quot;man&quot;,</span><br><span class="line">					&quot;name&quot;:&quot;小明&quot;,</span><br><span class="line">					&quot;id&quot;:&quot;A01&quot;,</span><br><span class="line">					&quot;class&quot;:&quot;A&quot;,</span><br><span class="line">					&quot;age&quot;:19</span><br><span class="line">				&#125;,</span><br><span class="line">				&#123;</span><br><span class="line">					&quot;score&quot;:&#123;</span><br><span class="line">						&quot;subject&quot;:[</span><br><span class="line">							&#123;&quot;name&quot;:&quot;Data Structure&quot;,&quot;content&quot;:80&#125;,</span><br><span class="line">							&#123;&quot;name&quot;:&quot;JavaProgramming&quot;,&quot;content&quot;:90&#125;</span><br><span class="line">						]</span><br><span class="line">					&#125;,</span><br><span class="line">					&quot;gender&quot;:&quot;woman&quot;,</span><br><span class="line">					&quot;name&quot;:&quot;小红&quot;,</span><br><span class="line">					&quot;id&quot;:&quot;A02&quot;,</span><br><span class="line">					&quot;class&quot;:&quot;B&quot;,</span><br><span class="line">					&quot;age&quot;:20</span><br><span class="line">				&#125;</span><br><span class="line">		],</span><br><span class="line">		&quot;student1&quot;:</span><br><span class="line">			&#123;</span><br><span class="line">				&quot;score&quot;:&#123;</span><br><span class="line">					&quot;subject&quot;:[</span><br><span class="line">						&#123;&quot;name&quot;:&quot;Data Structure&quot;,&quot;content&quot;:80&#125;,</span><br><span class="line">						&#123;&quot;name&quot;:&quot;JavaProgramming&quot;,&quot;content&quot;:90&#125;</span><br><span class="line">				 	]</span><br><span class="line">			 	&#125;,</span><br><span class="line">				&quot;gender&quot;:&quot;woman&quot;,</span><br><span class="line">				&quot;name&quot;:&quot;小红&quot;,</span><br><span class="line">				&quot;id&quot;:&quot;A02&quot;,</span><br><span class="line">				&quot;class&quot;:&quot;B&quot;,</span><br><span class="line">				&quot;age&quot;:20</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"># 2、解析xml的四种经典方式</span><br><span class="line">	xml文件如下：</span><br></pre></td></tr></table></figure>
-<p>&lt;?xml version=”1.0” encoding=”UTF-8”?&gt;</p>
-<p><bookstore><br>    <book id="1"><br>        <name>冰与火之歌</name><br>        <author>乔治马丁</author><br>        <year>2014</year><br>        <price>89</price><br>    </book><br>    <book id="2"><br>        <name>安徒生童话</name><br>        <year>2004</year><br>        <price>77</price><br>        <language>English</language><br>    </book><br></bookstore><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 1.1、DOM解析</span><br><span class="line"></span><br><span class="line">	　　DOM的全称是Document Object Model，也即文档对象模型。在应用程序中，基于DOM的XML分析器将一个XML文档转换成一个对象模型的集合（通常称DOM树），应用程序正是通过对这个对象模型的操作，来实现对XML文档数据的操作。通过DOM接口，应用程序可以在任何时候访问XML文档中的任何一部分数据，因此，这种利用DOM接口的机制也被称作随机访问机制。</span><br><span class="line">	</span><br><span class="line">	　　DOM接口提供了一种通过分层对象模型来访问XML文档信息的方式，这些分层对象模型依据XML的文档结构形成了一棵节点树。无论XML文档中所描述的是什么类型的信息，即便是制表数据、项目列表或一个文档，利用DOM所生成的模型都是节点树的形式。也就是说，DOM强制使用树模型来访问XML文档中的信息。由于XML本质上就是一种分层结构，所以这种描述方法是相当有效的。</span><br><span class="line">	</span><br><span class="line">	　　DOM树所提供的随机访问方式给应用程序的开发带来了很大的灵活性，它可以任意地控制整个XML文档中的内容。然而，由于DOM分析器把整个XML文档转化成DOM树放在了内存中，因此，当文档比较大或者结构比较复杂时，对内存的需求就比较高。而且，对于结构复杂的树的遍历也是一项耗时的操作。所以，DOM分析器对机器性能的要求比较高，实现效率不十分理想。不过，由于DOM分析器所采用的树结构的思想与XML文档的结构相吻合，同时鉴于随机访问所带来的方便，因此，DOM分析器还是有很广泛的使用价值的。</span><br><span class="line">	</span><br><span class="line">	　　　　优点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、形成了树结构，有助于更好的理解、掌握，且代码容易编写。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、解析过程中，树结构保存在内存中，方便修改。</span><br><span class="line">	</span><br><span class="line">	　　　　缺点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、由于文件是一次性读取，所以对内存的耗费比较大。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、如果XML文件比较大，容易影响解析性能且可能会造成内存溢出。</span><br><span class="line">	</span><br><span class="line">	　　以下是解析代码：</span><br></pre></td></tr></table></figure></p>
-<p>public class DOMTest {<br>    public static void main(String[] args) {<br>        //创建一个DocumentBuilderFactory的对象<br>        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();<br>        //创建一个DocumentBuilder的对象<br>        try {<br>            //创建DocumentBuilder对象<br>            DocumentBuilder db = dbf.newDocumentBuilder();<br>            //通过DocumentBuilder对象的parser方法加载books.xml文件到当前项目下<br>            Document document = db.parse(“books.xml”);<br>            //获取所有book节点的集合<br>            NodeList bookList = document.getElementsByTagName(“book”);<br>            //通过nodelist的getLength()方法可以获取bookList的长度<br>            System.out.println(“一共有” + bookList.getLength() + “本书”);<br>            //遍历每一个book节点<br>            for (int i = 0; i &lt; bookList.getLength(); i++) {<br>                System.out.println(“=================下面开始遍历第” + (i + 1) + “本书的内容=================”);<br>                //通过 item(i)方法 获取一个book节点，nodelist的索引值从0开始<br>                Node book = bookList.item(i);<br>                //获取book节点的所有属性集合<br>                NamedNodeMap attrs = book.getAttributes();<br>                System.out.println(“第 “ + (i + 1) + “本书共有” + attrs.getLength() + “个属性”);<br>                //遍历book的属性<br>                for (int j = 0; j &lt; attrs.getLength(); j++) {<br>                    //通过item(index)方法获取book节点的某一个属性<br>                    Node attr = attrs.item(j);<br>                    //获取属性名<br>                    System.out.print(“属性名：” + attr.getNodeName());<br>                    //获取属性值<br>                    System.out.println(“–属性值” + attr.getNodeValue());<br>                }<br>                //解析book节点的子节点<br>                NodeList childNodes = book.getChildNodes();<br>                //遍历childNodes获取每个节点的节点名和节点值<br>                System.out.println(“第” + (i+1) + “本书共有” +<br>                childNodes.getLength() + “个子节点”);<br>                for (int k = 0; k &lt; childNodes.getLength(); k++) {<br>                    //区分出text类型的node以及element类型的node<br>                    if (childNodes.item(k).getNodeType() == Node.ELEMENT_NODE) {<br>                        //获取了element类型节点的节点名<br>                        System.out.print(“第” + (k + 1) + “个节点的节点名：” </p>
-<pre><code>                    + childNodes.item(k).getNodeName());
-                    //获取了element类型节点的节点值
-                    System.out.println(&quot;--节点值是：&quot; + childNodes.item(k).getFirstChild().getNodeValue());
-                    //System.out.println(&quot;--节点值是：&quot; + childNodes.item(k).getTextContent());
-                }
-            }
-            System.out.println(&quot;======================结束遍历第&quot; + (i + 1) + &quot;本书的内容=================&quot;);
-        }
-    } catch (ParserConfigurationException e) {
-        e.printStackTrace();
-    } catch (SAXException e) {
-        e.printStackTrace();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }        
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##1.2 SAX解析</span><br><span class="line"></span><br><span class="line">	　　SAX的全称是Simple APIs for XML，也即XML简单应用程序接口。与DOM不同，SAX提供的访问模式是一种顺序模式，这是一种快速读写XML数据的方式。当使用SAX分析器对XML文档进行分析时，会触发一系列事件，并激活相应的事件处理函数，应用程序通过这些事件处理函数实现对XML文档的访问，因而SAX接口也被称作事件驱动接口。</span><br><span class="line">	</span><br><span class="line">	　　　　优点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、采用事件驱动模式，对内存耗费比较小。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、适用于只处理XML文件中的数据时。</span><br><span class="line">	</span><br><span class="line">	　　　　缺点：</span><br><span class="line">	</span><br><span class="line">	　　　　　　1、编码比较麻烦。</span><br><span class="line">	</span><br><span class="line">	　　　　　　2、很难同时访问XML文件中的多处不同数据。</span><br><span class="line">	</span><br><span class="line">	　　以下是解析代码：</span><br></pre></td></tr></table></figure></p>
-<p>public class SAXTest {<br>    /**</p>
-<pre><code> * @param args
- */
-public static void main(String[] args) {
-    //锟斤拷取一锟斤拷SAXParserFactory锟斤拷实锟斤拷
-    SAXParserFactory factory = SAXParserFactory.newInstance();
-    //通锟斤拷factory锟斤拷取SAXParser实锟斤拷
-    try {
-        SAXParser parser = factory.newSAXParser();
-        //锟斤拷锟斤拷SAXParserHandler锟斤拷锟斤拷
-        SAXParserHandler handler = new SAXParserHandler();
-        parser.parse(&quot;books.xml&quot;, handler);
-        System.out.println(&quot;~！~！~！共有&quot; + handler.getBookList().size()
-                + &quot;本书&quot;);
-        for (Book book : handler.getBookList()) {
-            System.out.println(book.getId());
-            System.out.println(book.getName());
-            System.out.println(book.getAuthor());
-            System.out.println(book.getYear());
-            System.out.println(book.getPrice());
-            System.out.println(book.getLanguage());
-            System.out.println(&quot;----finish----&quot;);
-        }
-    } catch (ParserConfigurationException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    } catch (SAXException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-}
-</code></pre><p>}</p>
-<p>public class SAXParserHandler extends DefaultHandler {<br>    String value = null;<br>    Book book = null;<br>    private ArrayList<book> bookList = new ArrayList<book>();<br>    public ArrayList<book> getBookList() {<br>        return bookList;<br>    }</book></book></book></p>
-<pre><code>int bookIndex = 0;
-/**
- * 用来标识解析开始
- */
-@Override
-public void startDocument() throws SAXException {
-    // TODO Auto-generated method stub
-    super.startDocument();
-    System.out.println(&quot;SAX解析开始&quot;);
-}
-
-/**
- * 用来标识解析结束
- */
-@Override
-public void endDocument() throws SAXException {
-    // TODO Auto-generated method stub
-    super.endDocument();
-    System.out.println(&quot;SAX解析结束&quot;);
-}
-
-/**
- * 解析xml元素
- */
-@Override
-public void startElement(String uri, String localName, String qName,
-        Attributes attributes) throws SAXException {
-    //调用DefaultHandler类的startElement方法
-    super.startElement(uri, localName, qName, attributes);
-    if (qName.equals(&quot;book&quot;)) {
-        bookIndex++;
-        //创建一个book对象
-        book = new Book();
-        //开始解析book元素的属性
-        System.out.println(&quot;======================开始遍历某一本书的内容=================&quot;);
-        //不知道book元素下属性的名称以及个数，如何获取属性名以及属性值
-        int num = attributes.getLength();
-        for(int i = 0; i &lt; num; i++){
-            System.out.print(&quot;book元素的第&quot; + (i + 1) +  &quot;个属性名是：&quot;
-                    + attributes.getQName(i));
-            System.out.println(&quot;---属性值是：&quot; + attributes.getValue(i));
-            if (attributes.getQName(i).equals(&quot;id&quot;)) {
-                book.setId(attributes.getValue(i));
-            }
-        }
-    }
-    else if (!qName.equals(&quot;name&quot;) &amp;&amp; !qName.equals(&quot;bookstore&quot;)) {
-        System.out.print(&quot;节点名是：&quot; + qName + &quot;---&quot;);
-    }
-}
-
-@Override
-public void endElement(String uri, String localName, String qName)
-        throws SAXException {
-    //调用DefaultHandler类的endElement方法
-    super.endElement(uri, localName, qName);
-    //判断是否针对一本书已经遍历结束
-    if (qName.equals(&quot;book&quot;)) {
-        bookList.add(book);
-        book = null;
-        System.out.println(&quot;======================结束遍历某一本书的内容=================&quot;);
-    }
-    else if (qName.equals(&quot;name&quot;)) {
-        book.setName(value);
-    }
-    else if (qName.equals(&quot;author&quot;)) {
-        book.setAuthor(value);
-    }
-    else if (qName.equals(&quot;year&quot;)) {
-        book.setYear(value);
-    }
-    else if (qName.equals(&quot;price&quot;)) {
-        book.setPrice(value);
-    }
-    else if (qName.equals(&quot;language&quot;)) {
-        book.setLanguage(value);
-    }
-}
-
-@Override
-public void characters(char[] ch, int start, int length)
-        throws SAXException {
-    // TODO Auto-generated method stub
-    super.characters(ch, start, length);
-    value = new String(ch, start, length);
-    if (!value.trim().equals(&quot;&quot;)) {
-        System.out.println(&quot;节点值是：&quot; + value);
-    }
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 1.3 JDOM解析</span><br><span class="line"></span><br><span class="line">	特征：</span><br><span class="line">	　　1、仅使用具体类，而不使用接口。</span><br><span class="line">	　　2、API大量使用了Collections类。</span><br><span class="line">	　　以下是解析代码：</span><br></pre></td></tr></table></figure></p>
-<p>public class JDOMTest {<br>    private static ArrayList<book> booksList = new ArrayList<book>();<br>    /**</book></book></p>
-<pre><code> * @param args
- */
-public static void main(String[] args) {
-    // 进行对books.xml文件的JDOM解析
-    // 准备工作
-    // 1.创建一个SAXBuilder的对象
-    SAXBuilder saxBuilder = new SAXBuilder();
-    InputStream in;
-    try {
-        // 2.创建一个输入流，将xml文件加载到输入流中
-        in = new FileInputStream(&quot;src/res/books.xml&quot;);
-        InputStreamReader isr = new InputStreamReader(in, &quot;UTF-8&quot;);
-        // 3.通过saxBuilder的build方法，将输入流加载到saxBuilder中
-        Document document = saxBuilder.build(isr);
-        // 4.通过document对象获取xml文件的根节点
-        Element rootElement = document.getRootElement();
-        // 5.获取根节点下的子节点的List集合
-        List&lt;Element&gt; bookList = rootElement.getChildren();
-        // 继续进行解析
-        for (Element book : bookList) {
-            Book bookEntity = new Book();
-            System.out.println(&quot;======开始解析第&quot; + (bookList.indexOf(book) + 1)
-                    + &quot;书======&quot;);
-            // 解析book的属性集合
-            List&lt;Attribute&gt; attrList = book.getAttributes();
-            // //知道节点下属性名称时，获取节点值
-            // book.getAttributeValue(&quot;id&quot;);
-            // 遍历attrList(针对不清楚book节点下属性的名字及数量)
-            for (Attribute attr : attrList) {
-                // 获取属性名
-                String attrName = attr.getName();
-                // 获取属性值
-                String attrValue = attr.getValue();
-                System.out.println(&quot;属性名：&quot; + attrName + &quot;----属性值：&quot;
-                        + attrValue);
-                if (attrName.equals(&quot;id&quot;)) {
-                    bookEntity.setId(attrValue);
-                }
-            }
-            // 对book节点的子节点的节点名以及节点值的遍历
-            List&lt;Element&gt; bookChilds = book.getChildren();
-            for (Element child : bookChilds) {
-                System.out.println(&quot;节点名：&quot; + child.getName() + &quot;----节点值：&quot;
-                        + child.getValue());
-                if (child.getName().equals(&quot;name&quot;)) {
-                    bookEntity.setName(child.getValue());
-                }
-                else if (child.getName().equals(&quot;author&quot;)) {
-                    bookEntity.setAuthor(child.getValue());
-                }
-                else if (child.getName().equals(&quot;year&quot;)) {
-                    bookEntity.setYear(child.getValue());
-                }
-                else if (child.getName().equals(&quot;price&quot;)) {
-                    bookEntity.setPrice(child.getValue());
-                }
-                else if (child.getName().equals(&quot;language&quot;)) {
-                    bookEntity.setLanguage(child.getValue());
-                }
-            }
-            System.out.println(&quot;======结束解析第&quot; + (bookList.indexOf(book) + 1)
-                    + &quot;书======&quot;);
-            booksList.add(bookEntity);
-            bookEntity = null;
-            System.out.println(booksList.size());
-            System.out.println(booksList.get(0).getId());
-            System.out.println(booksList.get(0).getName());
-
-        }
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    } catch (JDOMException e) {
-        e.printStackTrace();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 1.4、DOM4J解析</span><br><span class="line"></span><br><span class="line">	特征：</span><br><span class="line">	1、JDOM的一种智能分支，它合并了许多超出基本XML文档表示的功能。</span><br><span class="line">	2、它使用接口和抽象基本类方法。</span><br><span class="line">	3、具有性能优异、灵活性好、功能强大和极端易用的特点。</span><br><span class="line">	4、是一个开放源码的文件</span><br><span class="line">	以下是解析代码：</span><br></pre></td></tr></table></figure></p>
-<p>public class DOM4JTest {<br>    private static ArrayList<book> bookList = new ArrayList<book>();<br>    /**</book></book></p>
-<pre><code> * @param args
- */
-public static void main(String[] args) {
-    // 解析books.xml文件
-    // 创建SAXReader的对象reader
-    SAXReader reader = new SAXReader();
-    try {
-        // 通过reader对象的read方法加载books.xml文件,获取docuemnt对象。
-        Document document = reader.read(new File(&quot;src/res/books.xml&quot;));
-        // 通过document对象获取根节点bookstore
-        Element bookStore = document.getRootElement();
-        // 通过element对象的elementIterator方法获取迭代器
-        Iterator it = bookStore.elementIterator();
-        // 遍历迭代器，获取根节点中的信息（书籍）
-        while (it.hasNext()) {
-            System.out.println(&quot;=====开始遍历某一本书=====&quot;);
-            Element book = (Element) it.next();
-            // 获取book的属性名以及 属性值
-            List&lt;Attribute&gt; bookAttrs = book.attributes();
-            for (Attribute attr : bookAttrs) {
-                System.out.println(&quot;属性名：&quot; + attr.getName() + &quot;--属性值：&quot;
-                        + attr.getValue());
-            }
-            Iterator itt = book.elementIterator();
-            while (itt.hasNext()) {
-                Element bookChild = (Element) itt.next();
-                System.out.println(&quot;节点名：&quot; + bookChild.getName() + &quot;--节点值：&quot; + bookChild.getStringValue());
-            }
-            System.out.println(&quot;=====结束遍历某一本书=====&quot;);
-        }
-    } catch (DocumentException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-}
-</code></pre><p>}<br><code>`</code></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2713,7 +2706,7 @@ public static void main(String[] args) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

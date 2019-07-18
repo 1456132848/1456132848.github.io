@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一、java连接Ftp方法工具类package com.yunkai.psbmngboot.utils;  import org.apache.commons.net.ftp.FTPClient; import org.apache.commons.net.ftp.FTPFile; import org.apache.commons.net.ftp.FTPReply; import org.slf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java连接ftp">
+<meta property="og:url" content="http://yoursite.com/2019/07/18/java连接ftp/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="一、java连接Ftp方法工具类package com.yunkai.psbmngboot.utils;  import org.apache.commons.net.ftp.FTPClient; import org.apache.commons.net.ftp.FTPFile; import org.apache.commons.net.ftp.FTPReply; import org.slf">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-18T14:49:11.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java连接ftp">
+<meta name="twitter:description" content="一、java连接Ftp方法工具类package com.yunkai.psbmngboot.utils;  import org.apache.commons.net.ftp.FTPClient; import org.apache.commons.net.ftp.FTPFile; import org.apache.commons.net.ftp.FTPReply; import org.slf">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/18/java连接ftp/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>java连接ftp | 个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/java连接ftp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java连接ftp
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-18 22:37:53 / 修改时间：22:49:11" itemprop="dateCreated datePublished" datetime="2019-07-18T22:37:53+08:00">2019-07-18</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、java连接Ftp方法工具类"><a href="#一、java连接Ftp方法工具类" class="headerlink" title="一、java连接Ftp方法工具类"></a>一、java连接Ftp方法工具类</h1><pre><code>package com.yunkai.psbmngboot.utils;
+
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Description TODO
+ * @Author linmingxing
+ * @Date 2019/6/5 下午3:24
+ **/
+public class FtpUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(FtpUtil.class);
+
+    /**
+     * 获取FTPClient对象
+     * @param ftpHost 服务器IP
+     * @param ftpPort 服务器端口号
+     * @param ftpUserName 用户名
+     * @param ftpPassword 密码
+     * @return FTPClient
+     */
+    public static FTPClient getFTPClient(String ftpHost, int ftpPort, String ftpUserName, String ftpPassword) {
+        FTPClient ftp = null;
+        try {
+            ftp = new FTPClient();
+            ftp.setConnectTimeout(300000);
+            ftp.setControlEncoding(&quot;UTF-8&quot;);
+            // 连接FPT服务器,设置IP及端口
+            logger.info(&quot;开始连接connect&quot;+ftpHost+&quot;===&quot;+ftpPort+&quot;===&quot;+ftpUserName+&quot;====&quot;+ftpPassword+&quot;=====&quot;);
+            ftp.connect(ftpHost, ftpPort);
+            // 设置用户名和密码
+            logger.info(&quot;开始登录&quot;);
+            ftp.login(ftpUserName, ftpPassword);
+            // 设置连接超时时间,5000毫秒
+
+            // 设置中文编码集，防止中文乱码
+            if (!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
+                logger.info(&quot;未连接到FTP，用户名或密码错误&quot;);
+                ftp.disconnect();
+            } else {
+                logger.info(&quot;FTP连接成功&quot;);
+            }
+        } catch (SocketException e) {
+            logger.info(&quot;FTP的IP地址可能错误，请正确配置&quot;,e);
+        } catch (IOException e) {
+            logger.info(&quot;FTP的端口错误,请正确配置&quot;,e);
+        }
+        return ftp;
+    }
+
+    /**
+     * 关闭FTP方法
+     * @param ftp
+     * @return
+     */
+    public static boolean closeFTP(FTPClient ftp){
+
+        try {
+            ftp.logout();
+            logger.info(&quot;FTP关闭成功&quot;);
+        } catch (Exception e) {
+            logger.error(&quot;FTP关闭失败&quot;);
+        }finally{
+            if (ftp.isConnected()) {
+                try {
+                    ftp.disconnect();
+                } catch (IOException ioe) {
+                    logger.error(&quot;FTP关闭失败&quot;);
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 下载FTP下指定文件
+     * @param ftp FTPClient对象
+     * @param filePath FTP文件路径
+     * @param fileName 文件名
+     * @param downPath 下载保存的目录
+     * @return
+     */
+    public static File downLoadFTP(FTPClient ftp, String filePath, String fileName,
+                               String downPath) {
+        // 默认失败
+        boolean flag;
+
+        try {
+            // 跳转到文件目录
+            ftp.changeWorkingDirectory(filePath);
+            FTPFile[] files = ftp.listFiles();
+            for (FTPFile file : files) {
+                // 取得指定文件并下载
+                if (file.getName().equals(fileName)) {
+                    File downFile = new File(downPath + file.getName());
+                    OutputStream out = new FileOutputStream(downFile);
+                    // 绑定输出流下载文件,需要设置编码集，不然可能出现文件为空的情况
+                    flag = ftp.retrieveFile(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;UTF-8&quot;), out);
+                    out.flush();
+                    out.close();
+                    if(flag){
+                        logger.info(&quot;下载成功&quot;);
+                        return downFile;
+                    }else{
+                        logger.error(&quot;下载失败&quot;);
+                        return null;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error(&quot;下载失败&quot;);
+        }
+        return null;
+    }
+
+    /**
+     * FTP文件上传工具类
+     * @param ftp
+     * @param filePath
+     * @param ftpPath
+     * @return
+     */
+    public static boolean uploadFile(FTPClient ftp,String filePath,String ftpPath){
+        boolean flag = false;
+        InputStream in = null;
+        try {
+            // 设置PassiveMode传输
+//            ftp.enterLocalPassiveMode();
+            //设置二进制传输，使用BINARY_FILE_TYPE，ASC容易造成文件损坏
+            ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+            //判断FPT目标文件夹时候存在不存在则创建
+            if(!ftp.changeWorkingDirectory(ftpPath)){
+                ftp.makeDirectory(ftpPath);
+            }
+            //跳转目标目录
+            ftp.changeWorkingDirectory(ftpPath);
+
+            //上传文件
+            File file = new File(filePath);
+            in = new FileInputStream(file);
+            String tempName = ftpPath+File.separator+file.getName();
+            flag = ftp.storeFile(new String (tempName.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;),in);
+            if(flag){
+                logger.info(&quot;上传成功&quot;);
+            }else{
+                logger.error(&quot;上传失败&quot;);
+            }
+        } catch (Exception e) {
+            logger.error(&quot;上传失败&quot;,e);
+        }finally{
+            try {
+                in.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                logger.error(&quot;上传失败&quot;,e);
+            }
+        }
+        return flag;
+    }
+
+
+    /**
+     * FPT上文件的复制
+     * @param ftp  FTPClient对象
+     * @param olePath 原文件地址
+     * @param newPath 新保存地址
+     * @param fileName 文件名
+     * @return
+     */
+    public boolean copyFile(FTPClient ftp, String olePath, String newPath,String fileName) {
+        boolean flag = false;
+
+        try {
+            // 跳转到文件目录
+            ftp.changeWorkingDirectory(olePath);
+            //设置连接模式，不设置会获取为空
+            ftp.enterLocalPassiveMode();
+            // 获取目录下文件集合
+            FTPFile[] files = ftp.listFiles();
+            ByteArrayInputStream  in = null;
+            ByteArrayOutputStream out = null;
+            for (FTPFile file : files) {
+                // 取得指定文件并下载
+                if (file.getName().equals(fileName)) {
+
+                    //读取文件，使用下载文件的方法把文件写入内存,绑定到out流上
+                    out = new ByteArrayOutputStream();
+                    ftp.retrieveFile(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;), out);
+                    in = new ByteArrayInputStream(out.toByteArray());
+                    //创建新目录
+                    ftp.makeDirectory(newPath);
+                    //文件复制，先读，再写
+                    //二进制
+                    ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+                    flag = ftp.storeFile(newPath+File.separator+(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;)),in);
+                    out.flush();
+                    out.close();
+                    in.close();
+                    if(flag){
+                        logger.info(&quot;转存成功&quot;);
+                    }else{
+                        logger.error(&quot;复制失败&quot;);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error(&quot;复制失败&quot;);
+        }
+        return flag;
+    }
+
+    /**
+     * 实现文件的移动，这里做的是一个文件夹下的所有内容移动到新的文件，
+     * 如果要做指定文件移动，加个判断判断文件名
+     * 如果不需要移动，只是需要文件重命名，可以使用ftp.rename(oleName,newName)
+     * @param ftp
+     * @param oldPath
+     * @param newPath
+     * @return
+     */
+    public boolean moveFile(FTPClient ftp,String oldPath,String newPath){
+        boolean flag = false;
+
+        try {
+            ftp.changeWorkingDirectory(oldPath);
+            ftp.enterLocalPassiveMode();
+            //获取文件数组
+            FTPFile[] files = ftp.listFiles();
+            //新文件夹不存在则创建
+            if(!ftp.changeWorkingDirectory(newPath)){
+                ftp.makeDirectory(newPath);
+            }
+            //回到原有工作目录
+            ftp.changeWorkingDirectory(oldPath);
+            for (FTPFile file : files) {
+
+                //转存目录
+                flag = ftp.rename(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;), newPath+File.separator+new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+                if(flag){
+                    logger.info(file.getName()+&quot;移动成功&quot;);
+                }else{
+                    logger.error(file.getName()+&quot;移动失败&quot;);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(&quot;移动文件失败&quot;,e);
+        }
+        return flag;
+    }
+
+    /**
+     * 删除FTP上指定文件夹下文件及其子文件方法，添加了对中文目录的支持
+     * @param ftp FTPClient对象
+     * @param FtpFolder 需要删除的文件夹
+     * @return
+     */
+    public boolean deleteByFolder(FTPClient ftp,String FtpFolder){
+        boolean flag = false;
+        try {
+            ftp.changeWorkingDirectory(new String(FtpFolder.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+            ftp.enterLocalPassiveMode();
+            FTPFile[] files = ftp.listFiles();
+            for (FTPFile file : files) {
+                //判断为文件则删除
+                if(file.isFile()){
+                    ftp.deleteFile(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+                }
+                //判断是文件夹
+                if(file.isDirectory()){
+                    String childPath = FtpFolder + File.separator+file.getName();
+                    //递归删除子文件夹
+                    deleteByFolder(ftp,childPath);
+                }
+            }
+            //循环完成后删除文件夹
+            flag = ftp.removeDirectory(new String(FtpFolder.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+            if(flag){
+                logger.info(FtpFolder+&quot;文件夹删除成功&quot;);
+            }else{
+                logger.error(FtpFolder+&quot;文件夹删除成功&quot;);
+            }
+
+        } catch (Exception e) {
+            logger.error(&quot;删除失败&quot;,e);
+        }
+        return flag;
+
+    }
+
+    /**
+     * 遍历解析文件夹下所有文件
+     * @param folderPath 需要解析的的文件夹
+     * @param ftp FTPClient对象
+     * @return
+     */
+    public List&lt;String&gt; readFileByFolder(FTPClient ftp, String folderPath){
+        List&lt;String&gt; jsonList = new ArrayList&lt;&gt;();
+        boolean flage = false;
+        try {
+//            ftp.changeWorkingDirectory(new String(folderPath.getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+            //设置FTP连接模式
+//            ftp.enterLocalPassiveMode();
+            //获取指定目录下文件文件对象集合
+            FTPFile files[] = ftp.listFiles();
+            InputStream in = null;
+            BufferedReader reader = null;
+            for (FTPFile file : files) {
+                //判断为txt文件则解析
+                if(file.isFile()){
+                    String fileName = file.getName();
+                    if(fileName.endsWith(&quot;.txt&quot;)){
+                        in = ftp.retrieveFileStream(new String(file.getName().getBytes(&quot;UTF-8&quot;),&quot;ISO-8859-1&quot;));
+                        reader = new BufferedReader(new InputStreamReader(in, &quot;UTF-8&quot;));
+                        String temp;
+                        StringBuffer buffer = new StringBuffer();
+                        while((temp = reader.readLine())!=null){
+                            buffer.append(temp);
+                        }
+                        if(reader!=null){
+                            reader.close();
+                        }
+                        if(in!=null){
+                            in.close();
+                        }
+                        //ftp.retrieveFileStream使用了流，需要释放一下，不然会返回空指针
+                        ftp.completePendingCommand();
+                        //这里就把一个txt文件完整解析成了个字符串，就可以调用实际需要操作的方法
+                        System.out.println(buffer.toString());
+                        jsonList.add(buffer.toString());
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error(&quot;文件解析失败&quot;,e);
+        }
+
+        return jsonList;
+
+    }
+
+
+
+
+    public static void main(String[] args) throws IOException {
+//        FTPClient ftp = FtpUtil.getFTPClient(&quot;101.132.130.77&quot;, 21, &quot;ftpuser&quot;,&quot;taoyeti520&quot;);
+//        test.downLoadFTP(ftp, &quot;/file&quot;, &quot;你好.jpg&quot;, &quot;C:\\下载&quot;);
+        //test.copyFile(ftp, &quot;/file&quot;, &quot;/txt/temp&quot;, &quot;你好.txt&quot;);
+        //test.moveFile(ftp, &quot;/file&quot;, &quot;/txt/temp&quot;);
+        //test.deleteByFolder(ftp, &quot;/txt&quot;);
+//        test.readFileByFolder(ftp, &quot;/home/ftpuser/&quot;);
+//        test.closeFTP(ftp);
+
+    }
+
+
+}
+
+
+</code></pre><h1 id="二、-注意事项"><a href="#二、-注意事项" class="headerlink" title="二、 注意事项"></a>二、 注意事项</h1><pre><code>1、一般的在liunx服务器上的ftp，需要通过enterLocalPassiveMode()方法设置为被动模式，在window服务器上的ftp，一般不用设置，默认为主动模式。连接模式如果没有设置正确的话，获取文件的方法会假死，其他操作会报错。
+
+2、获取指定目录文件下的方法listFiles(&quot;path&quot;)的参数为服务器上设置的ftp的根路径（用终端连接到ftp后，输入命令pwd后得到的就是ftp的根路径）
+</code></pre>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/05/sublime填坑之旅/" rel="next" title="sublime填坑之旅">
+                <i class="fa fa-chevron-left"></i> sublime填坑之旅
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">林明星</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、java连接Ftp方法工具类"><span class="nav-number">1.</span> <span class="nav-text">一、java连接Ftp方法工具类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、-注意事项"><span class="nav-number">2.</span> <span class="nav-text">二、 注意事项</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">林明星</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
