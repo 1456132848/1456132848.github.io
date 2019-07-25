@@ -2556,7 +2556,7 @@ c、安卓部分代码实现：
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-29 15:07:32" itemprop="dateModified" datetime="2019-05-29T15:07:32+08:00">2019-05-29</time>
+                <time title="修改时间：2019-07-25 14:50:47" itemprop="dateModified" datetime="2019-07-25T14:50:47+08:00">2019-07-25</time>
               
             
           </span>
@@ -2619,7 +2619,33 @@ c、安卓部分代码实现：
 </code></pre><p>其中properties前的斜杠，相对于调用类，共同的顶层路径。</p>
 <h2 id="2、-RequestBody和-ResponseBody"><a href="#2、-RequestBody和-ResponseBody" class="headerlink" title="2、@RequestBody和@ResponseBody"></a>2、@RequestBody和@ResponseBody</h2><p>在SpringMVC中，可以使用@RequestBody和@ResponseBody两个注解，分别完成请求报文到对象和对象到响应报文的转换，底层这种灵活的消息转换机制，就是Spring3.x中新引入的HttpMessageConverter即消息转换器机制。</p>
 <p>我们可以用下面的图，简单描述一下这个过程。<br><img src="/2019/04/30/java知识点/img1.png" alt>      </p>
+<h2 id="3、java基础知识"><a href="#3、java基础知识" class="headerlink" title="3、java基础知识"></a>3、java基础知识</h2><pre><code>布尔类型的变量在赋值时会调用Boolean.valueOf(Boolean falg)方法，返回值为布尔值.
 
+类似其他的基本数据类型，及String类型，在赋值时(包括通过new 包装类创建对象时)都会调用该类型的valueOf()方法
+</code></pre><h2 id="4、javaWeb中获取Session中的内容"><a href="#4、javaWeb中获取Session中的内容" class="headerlink" title="4、javaWeb中获取Session中的内容"></a>4、javaWeb中获取Session中的内容</h2><pre><code>    public class ServletUtil {
+        public static ServletRequestAttributes getRequestAttributes() {
+            return (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        }
+
+        public static HttpServletRequest getRequest() {
+            return getRequestAttributes().getRequest();
+        }
+
+        public static HttpSession getSession() {
+            return getRequest().getSession();
+        }
+
+        public static Object getSessionAttributes(String attr) {
+            return getSession().getAttribute(attr);
+        }
+
+        public static User getCurrentUser() {
+            User user = (User) getSession().getAttribute(&quot;currentUser&quot;);
+            return user;
+        }
+}
+</code></pre><pre><code>可以通过上面这个方法，可以在任何地方获取session中的内容
+</code></pre>
           
         
       
