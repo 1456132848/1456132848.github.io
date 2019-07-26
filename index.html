@@ -365,7 +365,7 @@
                 
               
 
-              <time title="创建时间：2019-07-26 14:27:56 / 修改时间：16:14:36" itemprop="dateCreated datePublished" datetime="2019-07-26T14:27:56+08:00">2019-07-26</time>
+              <time title="创建时间：2019-07-26 14:27:56 / 修改时间：16:34:01" itemprop="dateCreated datePublished" datetime="2019-07-26T14:27:56+08:00">2019-07-26</time>
             
 
             
@@ -450,7 +450,7 @@ public static HungrySingleton getInstance() {
     System.out.println(&quot;对象地址：&quot; + single);
     return single;
 }
-</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 测试类与结果</span><br><span class="line">与 “懒汉模式--线程安全” 方式相同</span><br><span class="line"></span><br><span class="line">### 结论</span><br><span class="line">饿汉模式与懒汉模式的区别在于：</span><br><span class="line"></span><br><span class="line">	饿汉模式在类加载的时候就创建好了实例对象并赋予全局共享变量single。而懒汉模式则是在调用获取实例对象的方法时才开始实例化。</span><br><span class="line">	而且饿汉模式是线程安全的，无论是单线程，还是多线程，只会实例化一次。</span><br><span class="line">	所以饿汉模式会导致资源浪费，即使不调用方法，也会实例化。</span><br><span class="line"></span><br><span class="line">## 静态内部类方式</span><br><span class="line"></span><br><span class="line">### 实现类</span><br></pre></td></tr></table></figure></p>
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 测试类与结果</span><br><span class="line">与 “懒汉模式--线程安全” 方式相同</span><br><span class="line"></span><br><span class="line">### 结论</span><br><span class="line">饿汉模式与懒汉模式的区别在于：</span><br><span class="line"></span><br><span class="line">	饿汉模式在类加载的时候就创建好了实例对象并赋予全局共享变量single。而懒汉模式则是在调用获取实例对象的方法时才开始实例化。</span><br><span class="line">	而且饿汉模式是线程安全的，无论是单线程，还是多线程，只会实例化一次。</span><br><span class="line">	所以饿汉模式会导致资源浪费，即使不调用方法，也会实例化。</span><br><span class="line"></span><br><span class="line">## 静态内部类方式（推荐此种方式）</span><br><span class="line"></span><br><span class="line">### 实现类</span><br></pre></td></tr></table></figure></p>
 <p>public class InnerClazzSingleton {</p>
 <pre><code>private InnerClazzSingleton(){}
 
