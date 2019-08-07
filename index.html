@@ -320,6 +320,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/07/多线程案例-生产这与消费者/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/07/多线程案例-生产这与消费者/" class="post-title-link" itemprop="url">多线程案例----生产这与消费者</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-07 16:02:37 / 修改时间：16:16:02" itemprop="dateCreated datePublished" datetime="2019-08-07T16:02:37+08:00">2019-08-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一、简述"><a href="#一、简述" class="headerlink" title="一、简述"></a>一、简述</h1><p>​    消费者与生产者模型是多线程开发中的一个著名的案例。</p>
+<h1 id="二、基本程序"><a href="#二、基本程序" class="headerlink" title="二、基本程序"></a>二、基本程序</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> linmingxing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2019/7/16 下午3:30</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Message message = <span class="keyword">new</span> Message();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Produce(message)).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Consumer(message)).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Message</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String title,String content)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getMessage</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.print(title + <span class="string">"********"</span>);</span><br><span class="line">        System.out.println(content);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Produce</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    Message message;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Produce</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">100</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i % <span class="number">2</span> == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">this</span>.message.setMessage(<span class="string">"王健"</span>,<span class="string">"坏人"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.message.setMessage(<span class="string">"李飞"</span>,<span class="string">"好人"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    Message message;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Consumer</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">100</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.message.getMessage();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br><span class="line">王健********坏人</span><br><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br><span class="line">李飞********好人</span><br><span class="line">王健********坏人</span><br><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br><span class="line">李飞********好人</span><br></pre></td></tr></table></figure>
+<h1 id="三、解决重复生产或者重复消费后的程序"><a href="#三、解决重复生产或者重复消费后的程序" class="headerlink" title="三、解决重复生产或者重复消费后的程序"></a>三、解决重复生产或者重复消费后的程序</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> linmingxing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2019/7/16 下午3:30</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Message message = <span class="keyword">new</span> Message();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Produce(message)).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Consumer(message)).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Message</span></span>&#123;</span><br><span class="line">    <span class="comment">//true代表可生产false代表可消费</span></span><br><span class="line">    <span class="keyword">private</span> Boolean flag = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String title,String content)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">            <span class="keyword">this</span>.title = title;</span><br><span class="line">            <span class="keyword">this</span>.content = title;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">super</span>.notify();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">super</span>.wait();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">getMessage</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!flag)&#123;</span><br><span class="line">            System.out.print(title + <span class="string">"********"</span>);</span><br><span class="line">            System.out.println(content);</span><br><span class="line">            flag = <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">super</span>.notify();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">super</span>.wait();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Produce</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    Message message;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Produce</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">100</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i % <span class="number">2</span> == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">this</span>.message.setMessage(<span class="string">"王健"</span>,<span class="string">"坏人"</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.message.setMessage(<span class="string">"李飞"</span>,<span class="string">"好人"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    Message message;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Consumer</span><span class="params">(Message message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.message = message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">100</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.message.getMessage();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br><span class="line">王健********坏人</span><br><span class="line">李飞********好人</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/01/在CentOs7上搭建ftp服务器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2460,235 +2609,6 @@ Cucumber不区分这五个步骤关键字 Given， When， Then， And 和 But�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/01/hexo的安装与使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林明星">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/01/hexo的安装与使用/" class="post-title-link" itemprop="url">Hexo安装与使用</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-01 22:47:59" itemprop="dateCreated datePublished" datetime="2019-05-01T22:47:59+08:00">2019-05-01</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-13 16:18:45" itemprop="dateModified" datetime="2019-05-13T16:18:45+08:00">2019-05-13</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Hexo安装与使用"><a href="#Hexo安装与使用" class="headerlink" title="Hexo安装与使用"></a>Hexo安装与使用</h1><h2 id="1、前提条件"><a href="#1、前提条件" class="headerlink" title="1、前提条件"></a>1、前提条件</h2><pre><code>Node.js、git
-
-安装git:
-    Windows：下载并安装 [git](https://git-scm.com/download/win)
-    Mac：使用 Homebrew, MacPorts ：brew install git;或下载 安装程序 安装。
-    Linux (Ubuntu, Debian)：sudo apt-get install git-core
-    Linux (Fedora, Red Hat, CentOS)：sudo yum install git-core
-
-安装Node.js：
-    安装Node.js的最佳方式是使用nvm
-    curl方式安装nvm:
-        curl https://raw.github.com/creationix/nvm/v0.33.11/install.sh | sh
-    wget方式安装nvm:
-        wget -qO- https://raw.github.com/creationix/nvm/v0.33.11/install.sh | sh
-    安装完成后，重启终端并执行下列命令即可安装 Node.js。
-        nvm install stable
-</code></pre><p>$ nvm install stable</p>
-<h2 id="2、安装"><a href="#2、安装" class="headerlink" title="2、安装"></a>2、安装</h2><pre><code>npm install -g hexo-cli
-</code></pre><h2 id="3、建站"><a href="#3、建站" class="headerlink" title="3、建站"></a>3、建站</h2><pre><code>在指定文件夹执行以下指令
-    1、hexo init
-    2、npm install
-新建完成后，文件夹目录如下
-    .
-    ├── _config.yml
-    ├── package.json
-    ├── scaffolds
-    ├── source
-    |   ├── _drafts
-    |   └── _posts
-    └── themes
-</code></pre><h3 id="3-1、展示分类菜单"><a href="#3-1、展示分类菜单" class="headerlink" title="3.1、展示分类菜单"></a>3.1、展示分类菜单</h3><pre><code>首先打开主题目录下的config.xml文件，找到menu节点，放开被注释的categories。
-再在根目录下执行hexo new page categories，这时source目录下生成categories文件夹，里面有一个index.md文件。修改文件内容为以下即可： 
----
-title: categories
-date: 2019-05-02 08:36:58
-type: categories
----
-</code></pre><h3 id="3-2、展示标签菜单"><a href="#3-2、展示标签菜单" class="headerlink" title="3.2、展示标签菜单"></a>3.2、展示标签菜单</h3><pre><code>首先打开主题目录下的config.xml文件，找到menu节点，放开被注释的tags。
-再在根目录下执行hexo new page tags，这时source目录下生成tags文件夹，里面有一个index.md文件。修改文件内容为以下即可： 
----
-title: tags
-date: 2019-05-02 08:36:58
-type: tags
----
-</code></pre><h2 id="4、写作"><a href="#4、写作" class="headerlink" title="4、写作"></a>4、写作</h2><pre><code>执行命令：
-hexo new [layout] &lt;title&gt; 
-默认为 post，可以通过修改 _config.yml 中的 default_layout 参数来指定默认布局
-</code></pre><h2 id="5、服务器"><a href="#5、服务器" class="headerlink" title="5、服务器"></a>5、服务器</h2><pre><code>Hexo 3.0 把服务器独立成了个别模块，您必须先安装 hexo-server 才能使用
-执行：
-    npm install hexo-server --save
-安装完成后，输入以下命令以启动服务器，您的网站会在 http://localhost:4000 下启动。在服务器启动期间，Hexo 会监视文件变动并自动更新，您无须重启服务器
-执行：
-    hexo server（简写hexo s）
-也可以自定义端口，执行：
-    hexo server -p 5000
-这样开启的服务器为动态模式。    
-
-执行以下命令为静态模式：
-    hexo server -s
-在静态模式下，服务器只处理 public 文件夹内的文件，而不会处理文件变动，在执行时，您应该先自行执行 hexo generate（简写hexo g），此模式通常用于生产环境（production mode）下。
-</code></pre><h2 id="6、部署"><a href="#6、部署" class="headerlink" title="6、部署"></a>6、部署</h2><pre><code>Hexo 提供了快速方便的一键部署功能，让您只需一条命令就能将网站部署到服务器上。
-
-在部署之前，您必须先在 _config.yml 中修改参数，这里以git为例，将项目部署到git上。
-执行： 
-    npm install hexo-deployer-git --save
-修改配置:
-    deploy:
-  type: git
-  repo: &lt;repository url&gt; #https://bitbucket.org/JohnSmith/johnsmith.bitbucket.io
-  branch: [branch] #published
-  message: [自定义提交信息]
-
-配置完成后，执行以下命令即可：
-    hexo deploy（简写hexo d）
-</code></pre><p><a href="https://hexo.io/zh-cn/docs/deployment" target="_blank" rel="noopener">hexo官网文档</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2735,7 +2655,7 @@ hexo new [layout] &lt;title&gt;
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
