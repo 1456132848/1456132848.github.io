@@ -320,6 +320,297 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/07/文件、文件夹复制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/07/文件、文件夹复制/" class="post-title-link" itemprop="url">文件、文件夹复制</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-07 08:44:47 / 修改时间：08:46:07" itemprop="dateCreated datePublished" datetime="2019-09-07T08:44:47+08:00">2019-09-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> linmingxing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2019/7/16 下午3:30</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> count = <span class="number">1000000001</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"/Users/linmingxing/yyy/a.text"</span>);</span><br><span class="line">        FileOutputStream outputStream = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            outputStream = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">            outputStream.write(<span class="string">"我是住"</span>.getBytes(<span class="string">"ISO8859-1"</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                outputStream.close();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileUtil</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> File srcFile;</span><br><span class="line">    <span class="keyword">private</span> File desFile;</span><br><span class="line"></span><br><span class="line">    FileUtil(String srcPath, String desPath) &#123;</span><br><span class="line">        <span class="keyword">this</span>.srcFile = <span class="keyword">new</span> File(srcPath);</span><br><span class="line">        <span class="keyword">this</span>.desFile = <span class="keyword">new</span> File(desPath);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FileUtil(File srcFile, File desFile) &#123;</span><br><span class="line">        <span class="keyword">this</span>.srcFile = srcFile;</span><br><span class="line">        <span class="keyword">this</span>.desFile = desFile;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">copy</span><span class="params">(File srcFile,File desFile)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!desFile.getParentFile().exists())&#123;</span><br><span class="line">            desFile.getParentFile().mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">        FileInputStream inputStream = <span class="keyword">new</span> FileInputStream(srcFile);</span><br><span class="line">        FileOutputStream outputStream = <span class="keyword">new</span> FileOutputStream(desFile);</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        <span class="keyword">while</span> ( (len = inputStream.read(data)) != -<span class="number">1</span>)&#123;</span><br><span class="line">            outputStream.write(data,<span class="number">0</span>,len);</span><br><span class="line">        &#125;</span><br><span class="line">        outputStream.close();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">copyDir</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.copyDirImpl(<span class="keyword">this</span>.srcFile);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">copyDirImpl</span><span class="params">(File srcFile)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(srcFile.isDirectory())&#123;</span><br><span class="line">            File[] files = srcFile.listFiles();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; files.length; i++) &#123;</span><br><span class="line">                <span class="keyword">this</span>.copyDirImpl(files[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(!srcFile.getPath().contains(<span class="string">".DS_Store"</span>))&#123;</span><br><span class="line">                File file = <span class="keyword">new</span> File(<span class="keyword">this</span>.desFile,srcFile.getAbsolutePath().replace(<span class="keyword">this</span>.srcFile.getAbsolutePath(),<span class="string">""</span>));</span><br><span class="line">                copy(srcFile,file);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/07/使用Callable实现抢答功能/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="林明星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/07/使用Callable实现抢答功能/" class="post-title-link" itemprop="url">使用Callable实现抢答功能</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-07 17:18:49 / 修改时间：17:23:12" itemprop="dateCreated datePublished" datetime="2019-08-07T17:18:49+08:00">2019-08-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="方式一：主体方法只执行一次"><a href="#方式一：主体方法只执行一次" class="headerlink" title="方式一：主体方法只执行一次"></a>方式一：主体方法只执行一次</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Callable;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.FutureTask;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> linmingxing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2019/7/16 下午3:30</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       Res res = <span class="keyword">new</span> Res();</span><br><span class="line">        FutureTask task1 = <span class="keyword">new</span> FutureTask(res);</span><br><span class="line">        <span class="keyword">new</span> Thread(task1,<span class="string">"A"</span>).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(task1,<span class="string">"B"</span>).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(task1,<span class="string">"C"</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Res</span> <span class="keyword">implements</span> <span class="title">Callable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">"抢答成功"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">"抢答失败"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p>​    A或者B或者C抢答成功</p>
+<p>#方式一：主体方法执行多次</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Callable;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.FutureTask;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> linmingxing</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2019/7/16 下午3:30</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">       Res res = <span class="keyword">new</span> Res();</span><br><span class="line">        FutureTask task1 = <span class="keyword">new</span> FutureTask(res);</span><br><span class="line">        FutureTask task2 = <span class="keyword">new</span> FutureTask(res);</span><br><span class="line">        FutureTask task3 = <span class="keyword">new</span> FutureTask(res);</span><br><span class="line">        <span class="keyword">new</span> Thread(task1,<span class="string">"A"</span>).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(task2,<span class="string">"B"</span>).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(task3,<span class="string">"C"</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Res</span> <span class="keyword">implements</span> <span class="title">Callable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">"抢答成功"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">"抢答失败"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果：一个抢答成功，其他抢答失败。</p>
+<p>A抢答失败<br>C抢答失败<br>B抢答成功</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/07/多线程案例-生产这与消费者/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2153,377 +2444,6 @@ Elasticsearch -&gt; Indices   -&gt; Types  -&gt; Documents -&gt; Fields
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/16/maven知识点小记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林明星">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/16/maven知识点小记/" class="post-title-link" itemprop="url">maven知识点小记</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-16 16:44:46 / 修改时间：17:02:10" itemprop="dateCreated datePublished" datetime="2019-05-16T16:44:46+08:00">2019-05-16</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/maven/" itemprop="url" rel="index"><span itemprop="name">maven</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="一、maven更换阿里云镜像。"><a href="#一、maven更换阿里云镜像。" class="headerlink" title="一、maven更换阿里云镜像。"></a>一、maven更换阿里云镜像。</h1><p>在maven的setting.xml中的mirrors节点下添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirror&gt;</span><br><span class="line">	&lt;id&gt;alimaven&lt;/id&gt;</span><br><span class="line">	&lt;name&gt;aliyun maven&lt;/name&gt;</span><br><span class="line">	&lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">	&lt;mirrorOf&gt;*&lt;/mirrorOf&gt; </span><br><span class="line">&lt;/mirror&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="二、使用mvn-site构建项目文档"><a href="#二、使用mvn-site构建项目文档" class="headerlink" title="二、使用mvn site构建项目文档"></a>二、使用mvn site构建项目文档</h1><p>在pom文件中加入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;pluginManagement&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;version&gt;3.3&lt;/version&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;maven-project-info-reports-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;version&gt;2.7&lt;/version&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">        &lt;/plugins&gt;</span><br><span class="line">    &lt;/pluginManagement&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
-<p>在项目根目录下执行mvn-site即可。生成的文档将位于target/site目录下。</p>
-<p>在idea中，使用idea自带的maven工具来执行site命令时会报错。原因暂时不明白。在命令行中执行mvn site时也会报一些错误，但是最终结果是build succes。</p>
-<h1 id="三、maven依赖下载顺序"><a href="#三、maven依赖下载顺序" class="headerlink" title="三、maven依赖下载顺序"></a>三、maven依赖下载顺序</h1><pre><code>有三个仓库：
-    本地仓库
-    中央仓库
-    远程仓库（可以在pom.xml或者setting.xml中配置）
-
-maven首先在本地仓库中查找，若能找到依赖，则停止查找。
-若在本地仓库没找到，则在中央仓库寻找，若找到，则下载至本地，然后停止查找。
-若在中央仓库也没找到，并且配置了远程仓库，则在远程仓库寻找，若找到，则停止查找。
-若在远程仓库仍然没有找到，则报错。
-</code></pre>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/13/圆通开放平台订单对接/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="林明星">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/13/圆通开放平台订单对接/" class="post-title-link" itemprop="url">圆通海外G面单订单对接</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-05-13 15:27:16 / 修改时间：16:12:37" itemprop="dateCreated datePublished" datetime="2019-05-13T15:27:16+08:00">2019-05-13</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/第三方平台对接/" itemprop="url" rel="index"><span itemprop="name">第三方平台对接</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="一、接口描述"><a href="#一、接口描述" class="headerlink" title="一、接口描述"></a>一、接口描述</h1><pre><code>客户端发起请求后，本接口接收订单信息HTTP请求，解析订单信息XML，并存入圆通系统，下单成功后业务员会在一定时间内带上传统面单上门揽件。请求地址
-http://58.32.246.71:8000/overseaOrderServlet
-</code></pre><h1 id="二、传输方式"><a href="#二、传输方式" class="headerlink" title="二、传输方式"></a>二、传输方式</h1><pre><code>本文档内描述的接口均采用Http传输协议。 Get请求用于测试是否可以连通圆通接口服务器，在浏览器访问以下相关接口地址，如果返回success则证明接口访问正常。 数据传输必须用post请求。请求参数以及数据处理参见1.1.2和1.1.3.
-</code></pre><h1 id="三、报文结构"><a href="#三、报文结构" class="headerlink" title="三、报文结构"></a>三、报文结构</h1><pre><code>参数名称                   说明
-logistics_interface     要发送的xml内容（必填）
-data_digest             数字签名（必填）
-clientId                客户编码（电商标识）（必填）
-type                    订单类型（online:在线下单，offline:线下下单）（必填）
-
-logistics_interface表示需要发送的xml内容，比如拉取面单、上传订单等xml报文。 partnerId 表示商家密钥，比如测试环境测试账号K21000119的密钥为123456。 data_digest代表数字签名，签名的原理是对要发送的xml报文字符串加上商家密钥，先进行MD5加密，然后转换成base64字符串，作为数字签名的数据。即： Base64 [ MD5 [ logistics_interface +partnerId ] ] 最后对所有参数的数据内容进行url编码。
-</code></pre><h1 id="四、签名规则"><a href="#四、签名规则" class="headerlink" title="四、签名规则"></a>四、签名规则</h1><pre><code>加密步骤是：
-1. 以上XML格式的字符串订单以HTTP POST方式发送，客户端发起请求后，圆通电子面单接口在http response里把电子面单信息同步给客户端。
-2. 在POST时用“logistics_interface”字段表示要发送的XML经过URL编码之后的内容；
-3. 在POST时用“data_digest”字段进行签名验证。签名使用MD5方式，对logistics_interface的内容进行签名。原理为：通知内容（xml）+partnerId，然后进行MD5，转换为Base64字符串，然后在经过URL编码。
-详细解释如下：
-         假设xml内容为： &lt;order&gt;&lt;/order&gt;， partnerId为123456
-         对xml内容&lt;order&gt;&lt;/order&gt;进行URL编码（字符集UTF-8）为%3Corder%3E%3C%2Forder%3E
-         签名内容为&lt;order&gt;&lt;/order&gt;123456，经过md5和base64后为LghTkEmsD2tbQ3fsIBRcBg==
-         对签名的字符串进行URL编码，LghTkEmsD2tbQ3fsIBRcBg==的内容变为：LghTkEmsD2tbQ3fsIBRcBg%3D%3D
-         最终要发送的数据为：
-        logistics_interface=%3Corder%3E%3C%2Forder%3E&amp;data_digest=LghTkEmsD2tbQ3fsIBRcBg%3D%3D&amp;type=online&amp;clientId=ECNAME
-
-总结如下：
-a、在POST时用“logistics_interface”字段表示要发送的XML报文经过URL编码后的内容。
-b、在POST时用“data_digest”字段进行签名验证。签名使用MD5方式，对logistics_interface的内容进行签名。原理为：通知内容（xml）+partnerId，然后进行MD5，转换为Base64字符串，然后在经过URL编码。
-c、假设xml内容为： ， partnerId为123456。对xml内容（）进行URL编码（字符集UTF-8）为%3Corder%3E%3C%2Forder%3E。 签名内容为123456，经过md5和base64后为LghTkEmsD2tbQ3fsIBRcBg== 。对签名的字符串进行URL编码，LghTkEmsD2tbQ3fsIBRcBg==的内容变为：LghTkEmsD2tbQ3fsIBRcBg%3D%3D
-d、最终要发送的数据为：logistics_interface=%3Corder%3E%3C%2Forder%3E &amp;data_digest= LghTkEmsD2tbQ3fsIBRcBg%3D%3D &amp;type=offline&amp;clientId=K21000119
-</code></pre><h1 id="五、-参数列表"><a href="#五、-参数列表" class="headerlink" title="五、    参数列表"></a>五、    参数列表</h1><p>参见<a href="http://open.yto.net.cn/OpenPlatform/doc" target="_blank" rel="noopener">官方文档</a></p>
-<h1 id="六、代码示例"><a href="#六、代码示例" class="headerlink" title="六、代码示例"></a>六、代码示例</h1><pre><code>1、封装请求参数(
-图中JSONObject使用的是 
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.json&lt;/groupId&gt;
-        &lt;artifactId&gt;json&lt;/artifactId&gt;
-        &lt;version&gt;20180813&lt;/version&gt;
-    &lt;/dependency&gt;)
-</code></pre><p><a href="http://stleary.github.io/JSON-java/index.html" target="_blank" rel="noopener">org.json文档</a><br><img src="/2019/05/13/圆通开放平台订单对接/img1.png" alt><br>    2、加密后发送请求<br><img src="/2019/05/13/圆通开放平台订单对接/img2.png" alt></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2570,7 +2490,7 @@ d、最终要发送的数据为：logistics_interface=%3Corder%3E%3C%2Forder%3E 
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2630,7 +2550,11 @@ d、最终要发送的数据为：logistics_interface=%3Corder%3E%3C%2Forder%3E 
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
